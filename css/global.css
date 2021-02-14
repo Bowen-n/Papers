@@ -1,0 +1,32 @@
+html {
+    height: 100%;
+    width: 100%;
+    font-family: 'BlinkMacSystemFont', 'Lucida Grande', 'Segoe UI', Ubuntu, Cantarell, sans-serif;
+    font-size: 14px;
+    overflow: hidden;
+    background-color: #fff; /* To cover OSes with no default background color */
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+h1, div{
+    margin: 0px;
+    padding: 0px;
+}
+
+ul{
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+p{
+    margin: 0px;
+    padding: 0px;
+}
+

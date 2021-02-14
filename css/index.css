@@ -1,0 +1,150 @@
+:root{
+    --color-bg: rgb(245, 245, 245);
+    --color-border: rgb(224, 224, 224);
+    --color-font: rgb(112, 112, 112);
+
+    --button-hover: rgba(0, 0, 0, 0.1);
+    --library-button-selected: rgb(241, 150, 82);
+    --paperlist-button-selected: rgb(79, 142, 247);
+}
+
+.app{
+    width: 100%;
+    height: 100%;
+}
+
+
+
+/* library */
+.library{
+    width: 23%;
+    height: 100%;
+    
+    background-color: var(--color-bg);
+    border-right: 1px solid var(--color-border);
+
+    overflow-x: hidden;
+    overflow-y: scroll;
+    float: left;
+}
+
+.library-header{
+    border-bottom: 1px solid var(--color-border);
+    position: relative;
+    height: 78px;
+    margin-bottom: 15px;
+}
+
+#library-header-title{
+    font-size: 28px;
+    color: var(--color-font);
+    line-height: 78px;
+    position: absolute;
+    left: 30px;
+}
+
+#library-header-icon{
+    position: absolute;
+    right: 30px;
+    top: 20px;
+}
+
+
+/* paperlist */
+.paperlist{
+    width: 40%;
+    height: 100%;
+
+    border-right: 1px solid var(--color-border);
+
+    overflow: scroll;
+    float: left;
+}
+
+
+.library-button, .paperlist-button{
+    display: block;
+    width: 100%;
+    background-color: transparent;
+
+    color: var(--color-font);
+    line-height: 25px;
+    text-align: left;
+
+    border: none;
+    outline: none;
+    text-indent: 30px;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.paperlist-button{
+    /* border-top: 1px solid black; */
+    text-indent: 15px;
+}
+
+.library-button:hover, .paperlist-button:hover{
+    background-color: var(--button-hover);
+}
+
+.library-button:focus{
+    color:white;
+    background-color: var(--library-button-selected);
+}
+
+.paperlist-button:focus{
+    color: white;
+    background-color: var(--paperlist-button-selected);
+}
+
+.function{
+    height: 30px;
+    font-size: 0px; /* remove the distance between two buttons */
+    border-bottom: 1px solid var(--color-border);
+}
+
+.function-button{
+    height: 30px;
+    width: 80px;
+    padding: 0px;
+    border: none;
+    outline: none;
+    border-right: 1px solid var(--color-border);
+    background-color: var(--color-bg);
+}
+
+.function-button:hover{
+    background-color: var(--button-hover)
+}
+
+.function-button:active{
+    background-color: var(--paperlist-button-selected);
+}
+
+/* overview */
+.overview{
+    width: 36%;
+    height: 100%;
+
+    overflow: scroll;
+    float: left;
+}
+
+.overview-table{
+    width: 100%;
+    /* display: none; */
+}
+
+.overview-table .table-title{
+    width: 16%;
+    color: var(--color-font);
+    vertical-align: text-top;
+    text-align: right;
+}
+
+.overview-table .table-content{
+    width: 80%;
+    margin-left: 10px;
+}

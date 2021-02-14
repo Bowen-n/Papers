@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" type="text/css" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/global.css">
+    <title>Panager</title>
+
+</head>
+<body>
+
+    <div class='app'>
+        <div class='library'>
+            <div class='library-header'>
+                <span id='library-header-title'><strong>Papers</strong></span>
+                <embed id='library-header-icon' src='../resources/icon.png' width='40'>
+            </div>
+            <!-- <button class='library-button'>GNN</button>
+            <button class='library-button'>NLP</button>
+            <button class='library-button'>APT</button> -->
+        </div>
+
+
+        <div class='paperlist'>
+            <div class='function'>
+                <button class='function-button' id='add-paper'>Add</button>
+                <button class='function-button' id='remove-paper'>Remove</button>
+                <button class='function-button' id='delete-paper'>Delete</button>
+            </div>
+            <!-- <button class='paperlist-button'>Paper 1</button>
+            <button class='paperlist-button'>Paper 2</button> -->
+        </div>
+
+        <div class='overview'>
+            <div class='blank'></div>
+            
+            <table class='overview-table'>
+                <tr>
+                    <td class='table-title'>Title</th>
+                    <td contenteditable='true' class='table-content' id='title'></th>
+                </tr>
+                <tr>
+                    <td class='table-title'>Abstract</td>
+                    <td class='table-content' id='abstract'></td>
+                </tr>
+                <tr>
+                    <td class='table-title'>Url</td>
+                    <td class='table-content' id='url'></td>
+                </tr>
+              </table>
+        
+        </div>
+    </div>
+
+    <script src='../renderer/global.js'></script>
+    <script src='../renderer/menu.js'></script>
+    <script src='../renderer/pdf_parser.js'></script>
+    <script src='../renderer/function.js'></script>
+    <script src='../renderer/index.js'></script>
+
+</body>
+</html>
