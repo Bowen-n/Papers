@@ -37,6 +37,9 @@ function createPaperButton(content) {
 function bindPaperButton(paper_btn) {
     var abstract_p = document.querySelector('#abstract')
     var table = document.querySelector('.overview-table')
+    var delete_btn = document.querySelector('#delete-paper')
+    var remove_btn = document.querySelector('#remove-paper')
+
     paper_btn.onclick = function(){
         paperdb.findOne({title: this.innerHTML}, (err, docs)=>{
             table.style.display = 'table' // display paper info
@@ -46,6 +49,14 @@ function bindPaperButton(paper_btn) {
                 var abstract = extractAbstract(data.text)
                 abstract_p.innerHTML = abstract
             })
+
+            delete_btn.onclick = function(){
+                deletePaper(paper_btn)
+            }
+
+            remove_btn.onclick = function(){
+                removePaper(paper_btn)
+            }
         })
     }
 }

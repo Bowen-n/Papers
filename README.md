@@ -19,7 +19,7 @@ Paper manage app built with Electron.
   - [ ] Tags
   - [ ] Remark
 - [ ] **Topic** tag and **Research** tag for paper
-- [ ] **Operation** on paper
-  - [ ] Add
-  - [ ] Remove from one tag
-  - [ ] Delete from the whole database
+- [x] **Operation** on paper
+  - [x] Add
+  - [x] Remove from one tag
+  - [x] Delete from the whole database

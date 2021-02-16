@@ -46,3 +46,40 @@ function bindAddPapers() {
         addPapers()
     }
 }
+
+function deletePaper(paper_btn) {
+    var title = paper_btn.innerHTML
+    paperdb.remove({title: title})
+    // refresh paperlist
+    document.querySelector('#'+spaceToBar(global_class)).click()
+}
+
+function removePaper(paper_btn) {
+    var title = paper_btn.innerHTML
+
+    update_doc = {}
+    if(global_category == 'research'){
+        update_doc.research = null
+    } else if(global_category == 'topic'){
+        update_doc.topic = null
+    }
+
+    paperdb.findOne({title: title}, (err, docs)=>{
+        console.log(docs)
+        if(global_category == 'research'){
+            docs.research = null
+        } else if(global_category == 'topic'){
+            docs.topic = null
+        }
+        console.log(docs)
+
+        if(docs.topic == null && docs.research == null){
+            paperdb.remove({title: title})
+        } else {
+            paperdb.update({title: title}, docs, {})
+        }
+
+        // refresh paperlist
+        document.querySelector('#'+spaceToBar(global_class)).click()
+    })
+}
