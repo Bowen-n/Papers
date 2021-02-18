@@ -2,13 +2,13 @@ const Datastore = require('nedb')
 db = new Datastore({ filename: 'category.bd', autoload: true });
 
 var doc1 = {
-    name: 'topic',
-    content: ['GNN', 'APT']
+    class: 'topic',
+    tags: ['GNN', 'APT', 'AI']
 };
 
 var doc2 = {
-    name: 'research',
-    content: ['APT Detection', 'MCBG']
+    class: 'research',
+    tags: ['APT-Detection', 'MCBG']
 }
 
 db.insert(doc1)

@@ -1,7 +1,9 @@
-function createLibraryButton(content) {
-    var library_btn = document.createElement('button')
+function createLibraryButton(content, type) {
+    var library_btn = document.createElement('span')
     library_btn.setAttribute('class', 'library-button')
     library_btn.setAttribute('id', spaceToBar(content))
+    library_btn.setAttribute('type', type)
+    library_btn.setAttribute('status', 'up')
     library_btn.innerHTML = content
     return library_btn
 }
@@ -10,20 +12,47 @@ function bindLibraryButton(library_btn) {
     var paperlist = document.querySelector('.paperlist')
 
     library_btn.onclick = function(){
-        clearPaperList()
-        clearOverview()
-        global_class = library_btn.innerHTML
-
-        paperdb.find(
-            {$or: [{'research': this.innerHTML}, {'topic': this.innerHTML}]}, 
-            (err, docs)=>{
-            for(var j=0; j<docs.length; j++){
-                var paper_btn = createPaperButton(docs[j].title)
-                bindPaperButton(paper_btn)
-                paperlist.appendChild(paper_btn)
+        if(library_btn.getAttribute('type') == 'topic'){
+            if(library_btn.getAttribute('status') == 'up'){
+                library_btn.setAttribute('status', 'down')
+                library_btn.setAttribute('style', 
+                'color:white; background-color: rgb(241, 150, 82);')
+                tags_filter.push(library_btn.innerHTML)
+            } else {
+                library_btn.setAttribute('status', 'up')
+                library_btn.setAttribute('style', 
+                'color:rgb(112, 112, 112); background-color: transparent')
+                tags_filter.remove(library_btn.innerHTML)
             }
-        })
+        } else {
+            if(library_btn.getAttribute('status') == 'up'){
+                library_btn.setAttribute('status', 'down')
+                library_btn.setAttribute('style',
+                'color:white; background-color: rgb(79, 142, 247);')
+                tags_filter.push(library_btn.innerHTML)
+            } else {
+                library_btn.setAttribute('status', 'up')
+                library_btn.setAttribute('style', 
+                'color:rgb(112, 112, 112); background-color: transparent')
+                tags_filter.remove(library_btn.innerHTML)
+            }
+        }
     }
+    // library_btn.onclick = function(){
+    //     clearPaperList()
+    //     clearOverview()
+    //     global_class = library_btn.innerHTML
+
+    //     paperdb.find(
+    //         {$or: [{'research': this.innerHTML}, {'topic': this.innerHTML}]}, 
+    //         (err, docs)=>{
+    //         for(var j=0; j<docs.length; j++){
+    //             var paper_btn = createPaperButton(docs[j].title)
+    //             bindPaperButton(paper_btn)
+    //             paperlist.appendChild(paper_btn)
+    //         }
+    //     })
+    // }
 }
 
 function createPaperButton(content) {
@@ -83,19 +112,29 @@ function clearOverview() {
     table.style.display = 'none'
 }
 
-// display library according to category
-// category: 'topic' or 'research'
-function displayLibrary(category) {
-    clearLibrary()
+// display library
+// topic tags and research tags
+function displayLibrary() {
+    // clearLibrary()
     clearOverview()
-    var library = document.querySelector('.library')
+    var library_topic = document.querySelector('.library-topic')
+    var library_research = document.querySelector('.library-research')
 
-    catebd.find({name: category}, (err, docs)=>{
-        var topic_list = docs[0].content
-        for(var i=0; i<topic_list.length; i++){
-            var library_btn = createLibraryButton(topic_list[i])
+    catedb.findOne({class: 'topic'}, (err, doc)=>{
+        var topic_tags = doc.tags
+        for(var i=0; i<topic_tags.length; i++){
+            var library_btn = createLibraryButton(topic_tags[i], 'topic')
             bindLibraryButton(library_btn)
-            library.appendChild(library_btn)
+            library_topic.appendChild(library_btn)
+        }
+    })
+
+    catedb.findOne({class: 'research'}, (err, doc)=>{
+        var research_tags = doc.tags
+        for(var i=0; i<research_tags.length; i++){
+            var research_btn = createLibraryButton(research_tags[i], 'research')
+            bindLibraryButton(research_btn)
+            library_research.appendChild(research_btn)
         }
     })
 }
@@ -103,7 +142,7 @@ function displayLibrary(category) {
 
 window.onload = function() {
 
-    displayLibrary(global_category)
+    displayLibrary()
     bindLibraryRightMenu()
     bindAddPapers()
     

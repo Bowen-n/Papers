@@ -18,7 +18,7 @@ Paper manage app built with Electron.
   - [ ] Url
   - [ ] Tags
   - [ ] Remark
-- [ ] **Topic** tag and **Research** tag for paper
+- [ ] Multiple Tags for Paper
 - [x] **Operation** on paper
   - [x] Add
   - [x] Remove from one tag
