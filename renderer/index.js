@@ -56,7 +56,6 @@ function bindPaperButton(paper_btn) {
         if(paper_btn.getAttribute('status') == 'up'){
             if(current_paper.length == 1){
                 up_btn = document.querySelector('#'+spaceToBar(current_paper[0]))
-                console.log(up_btn)
                 up_btn.setAttribute('status', 'up')
                 up_btn.setAttribute('style', 'color:rgb(112, 112, 112); background-color: transparent')
                 current_paper = []

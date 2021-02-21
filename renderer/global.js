@@ -16,7 +16,9 @@ var catedb = new Datastore({ filename: 'database/category.bd', autoload: true})
 // utils
 function spaceToBar(text) {
     text = text.replace(/ /g, '-')
-	return text.replace(/\./g, '-')
+	text = text.replace(/\./g, '-')
+	text = text.replace(/:/g, '-')
+	return text
 }
 
 // prototype
