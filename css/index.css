@@ -94,16 +94,6 @@
     background-color: var(--button-hover);
 }
 
-.library-button:focus{
-    color:white;
-    background-color: var(--library-button-selected);
-}
-
-.paperlist-button:focus{
-    color: white;
-    background-color: var(--paperlist-button-selected);
-}
-
 .function{
     height: 30px;
     font-size: 0px; /* remove the distance between two buttons */

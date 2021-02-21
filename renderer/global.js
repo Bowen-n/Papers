@@ -6,9 +6,8 @@ const pdf = remote.require('pdf-parse')
 const fs = require('fs')
 
 // vars
-var global_category = 'research'
-var global_class = ''
 var tags_filter = []
+var current_paper = []
 
 // databases
 var paperdb = new Datastore({ filename: 'database/database.bd', autoload: true })
@@ -16,7 +15,8 @@ var catedb = new Datastore({ filename: 'database/category.bd', autoload: true})
 
 // utils
 function spaceToBar(text) {
-    return text.replace(/ /g, '-')
+    text = text.replace(/ /g, '-')
+	return text.replace(/\./g, '-')
 }
 
 // prototype

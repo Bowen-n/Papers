@@ -1,11 +1,4 @@
 function addPapers() {
-    if(global_class == ''){
-        dialog.showMessageBox({
-            type: 'warning',
-            message: 'Please select a class first.'
-        })
-        return
-    }
 
     dialog.showOpenDialog({
         message: 'Select papers',
@@ -21,20 +14,15 @@ function addPapers() {
                 title: title_path,
                 author: null, url: null,
                 path: filepath_list[i],
+                tags: [],
                 remark: null
             }
-            if(global_category == 'research'){
-                new_doc.research = global_class
-                new_doc.topic = null
-            } else if(global_category == 'topic'){
-                new_doc.research = null
-                new_doc.topic = global_class
-            }
+
             paperdb.insert(new_doc)
         }
 
         // refresh paperlist
-        document.querySelector('#'+spaceToBar(global_class)).click()
+        displayPaperlist()
     }).catch(err=>{
         console.log(err)
     })

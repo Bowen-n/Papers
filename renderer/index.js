@@ -9,56 +9,40 @@ function createLibraryButton(content, type) {
 }
 
 function bindLibraryButton(library_btn) {
-    var paperlist = document.querySelector('.paperlist')
 
     library_btn.onclick = function(){
         if(library_btn.getAttribute('type') == 'topic'){
             if(library_btn.getAttribute('status') == 'up'){
                 library_btn.setAttribute('status', 'down')
-                library_btn.setAttribute('style', 
-                'color:white; background-color: rgb(241, 150, 82);')
+                library_btn.setAttribute('style', 'color:white; background-color: rgb(241, 150, 82);')
                 tags_filter.push(library_btn.innerHTML)
             } else {
                 library_btn.setAttribute('status', 'up')
-                library_btn.setAttribute('style', 
-                'color:rgb(112, 112, 112); background-color: transparent')
+                library_btn.setAttribute('style', 'color:rgb(112, 112, 112); background-color: transparent')
                 tags_filter.remove(library_btn.innerHTML)
             }
         } else {
             if(library_btn.getAttribute('status') == 'up'){
                 library_btn.setAttribute('status', 'down')
-                library_btn.setAttribute('style',
-                'color:white; background-color: rgb(79, 142, 247);')
+                library_btn.setAttribute('style', 'color:white; background-color: rgb(79, 142, 247);')
                 tags_filter.push(library_btn.innerHTML)
             } else {
                 library_btn.setAttribute('status', 'up')
-                library_btn.setAttribute('style', 
-                'color:rgb(112, 112, 112); background-color: transparent')
+                library_btn.setAttribute('style', 'color:rgb(112, 112, 112); background-color: transparent')
                 tags_filter.remove(library_btn.innerHTML)
             }
         }
-    }
-    // library_btn.onclick = function(){
-    //     clearPaperList()
-    //     clearOverview()
-    //     global_class = library_btn.innerHTML
 
-    //     paperdb.find(
-    //         {$or: [{'research': this.innerHTML}, {'topic': this.innerHTML}]}, 
-    //         (err, docs)=>{
-    //         for(var j=0; j<docs.length; j++){
-    //             var paper_btn = createPaperButton(docs[j].title)
-    //             bindPaperButton(paper_btn)
-    //             paperlist.appendChild(paper_btn)
-    //         }
-    //     })
-    // }
+        displayPaperlist()
+        current_paper = []
+    }
 }
 
 function createPaperButton(content) {
-    var paper_btn = document.createElement('button')
+    var paper_btn = document.createElement('span')
     paper_btn.setAttribute('class', 'paperlist-button')
     paper_btn.setAttribute('id', spaceToBar(content))
+    paper_btn.setAttribute('status', 'up')
     paper_btn.innerHTML = content
     return paper_btn
 }
@@ -66,10 +50,26 @@ function createPaperButton(content) {
 function bindPaperButton(paper_btn) {
     var abstract_p = document.querySelector('#abstract')
     var table = document.querySelector('.overview-table')
-    var delete_btn = document.querySelector('#delete-paper')
-    var remove_btn = document.querySelector('#remove-paper')
 
     paper_btn.onclick = function(){
+
+        if(paper_btn.getAttribute('status') == 'up'){
+            if(current_paper.length == 1){
+                up_btn = document.querySelector('#'+spaceToBar(current_paper[0]))
+                console.log(up_btn)
+                up_btn.setAttribute('status', 'up')
+                up_btn.setAttribute('style', 'color:rgb(112, 112, 112); background-color: transparent')
+                current_paper = []
+            }
+            paper_btn.setAttribute('status', 'down')
+            paper_btn.setAttribute('style', 'color:white; background-color: rgb(79, 142, 247);')
+            current_paper.push(paper_btn.innerHTML)
+        } else {
+            paper_btn.setAttribute('status', 'up')
+            paper_btn.setAttribute('style', 'color:rgb(112, 112, 112); background-color: transparent')
+            current_paper.remove(paper_btn.innerHTML)
+        }
+
         paperdb.findOne({title: this.innerHTML}, (err, docs)=>{
             table.style.display = 'table' // display paper info
             
@@ -79,13 +79,13 @@ function bindPaperButton(paper_btn) {
                 abstract_p.innerHTML = abstract
             })
 
-            delete_btn.onclick = function(){
-                deletePaper(paper_btn)
-            }
+            // delete_btn.onclick = function(){
+            //     deletePaper(paper_btn)
+            // }
 
-            remove_btn.onclick = function(){
-                removePaper(paper_btn)
-            }
+            // remove_btn.onclick = function(){
+            //     removePaper(paper_btn)
+            // }
         })
     }
 }
@@ -139,11 +139,35 @@ function displayLibrary() {
     })
 }
 
+function displayPaperlist() {
+    clearPaperList()
+
+    sub_query = []
+    for(var i=0; i<tags_filter.length; i++){
+        sub_query.push({tags: {$elemMatch: tags_filter[i]}})
+    }
+    query = {$and: sub_query}
+    paperdb.find(query, (err, docs)=>{
+        if(err){
+            console.log(err)
+            return
+        }
+        for(var i=0; i<docs.length; i++){
+            paper_btn = createPaperButton(docs[i].title)
+            bindPaperButton(paper_btn)
+            document.querySelector('.paperlist').appendChild(paper_btn)
+        }
+    })
+    // tags_filter
+}
 
 window.onload = function() {
 
+    // display two main parts
     displayLibrary()
+    displayPaperlist()
+
+    // func
     bindLibraryRightMenu()
     bindAddPapers()
-    
 }
