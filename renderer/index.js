@@ -34,6 +34,7 @@ function bindLibraryButton(library_btn) {
         }
 
         displayPaperlist()
+        clearOverview()
         current_paper = []
     }
 }
@@ -48,7 +49,6 @@ function createPaperButton(content) {
 }
 
 function bindPaperButton(paper_btn) {
-    var abstract_p = document.querySelector('#abstract')
     var table = document.querySelector('.overview-table')
 
     paper_btn.onclick = function(){
@@ -66,7 +66,7 @@ function bindPaperButton(paper_btn) {
         } else {
             paper_btn.setAttribute('status', 'up')
             paper_btn.setAttribute('style', 'color:rgb(112, 112, 112); background-color: transparent')
-            current_paper.remove(paper_btn.innerHTML)
+            // current_paper.remove(paper_btn.innerHTML)
         }
 
         paperdb.findOne({title: this.innerHTML}, (err, docs)=>{
@@ -75,16 +75,13 @@ function bindPaperButton(paper_btn) {
             var dataBuffer = fs.readFileSync(docs.path);
             pdf(dataBuffer).then(data=>{
                 var abstract = extractAbstract(data.text)
-                abstract_p.innerHTML = abstract
+                document.querySelector('#abstract').innerHTML = abstract
             })
 
-            // delete_btn.onclick = function(){
-            //     deletePaper(paper_btn)
-            // }
-
-            // remove_btn.onclick = function(){
-            //     removePaper(paper_btn)
-            // }
+            document.querySelector('#title').innerHTML = docs.title
+            document.querySelector('#url').innerHTML = docs.url
+            document.querySelector('#remark').innerHTML = docs.remark
+            // TODO
         })
     }
 }
@@ -169,4 +166,7 @@ window.onload = function() {
     // func
     bindLibraryRightMenu()
     bindAddPapers()
+
+    // overview func
+    bindOverviewEditor()
 }

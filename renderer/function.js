@@ -71,3 +71,47 @@ function removePaper(paper_btn) {
         document.querySelector('#'+spaceToBar(global_class)).click()
     })
 }
+
+function bindOverviewEditor() {
+    bindEditTitle()
+    bindEditUrl()
+    bindEditRemark()
+}
+
+function disableStylePaste(dom) {
+    dom.addEventListener('paste', function(e){
+        e.preventDefault()
+        var text = e.clipboardData.getData('text/plain')
+        document.execCommand('insertText', false, text)
+    })
+}
+
+function bindEditTitle() {
+    edit_title = document.querySelector('#title')
+    edit_title.addEventListener('blur', function(){
+        new_title = this.innerHTML
+        old_title = current_paper[0]
+        current_paper = [new_title]
+        paperdb.update({title: old_title}, {$set: {title: new_title}}, {})
+        displayPaperlist()
+    })
+
+    // disable paste with text style
+    disableStylePaste(edit_title)
+}
+
+function bindEditUrl() {
+    edit_url = document.querySelector('#url')
+    edit_url.addEventListener('blur', function(){
+        paperdb.update({title: current_paper[0]}, {$set: {url: this.innerHTML}}, {})
+    })
+    disableStylePaste(edit_url)
+}
+
+function bindEditRemark() {
+    edit_remark = document.querySelector('#remark')
+    edit_remark.addEventListener('blur', function(){
+        paperdb.update({title: current_paper[0]}, {$set: {remark: this.innerHTML}}, {})
+    })
+    disableStylePaste(edit_remark)
+}

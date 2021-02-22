@@ -132,11 +132,16 @@
     /* display: none; */
 }
 
+.overview-table-tr{
+    line-height: 1.5;
+}
+
 .overview-table .table-title{
     width: 16%;
     color: var(--color-font);
     vertical-align: text-top;
     text-align: right;
+    margin-bottom: 10px;
 }
 
 .overview-table .table-content{
