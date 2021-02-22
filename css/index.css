@@ -148,3 +148,9 @@
     width: 80%;
     margin-left: 30px;
 }
+
+#tags-add-icon{
+    position: relative;
+    top: 6px;
+    right: 3px;
+}

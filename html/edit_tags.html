@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="../css/global.css">
+    <link rel="stylesheet" type="text/css" href="../css/edit_tags.css">
+    <title>Tags Editor</title>
+</head>
+<body>
+    <div class='tags-editor'>
+
+    </div>
+    <script src='../renderer/global.js'></script>
+
+    <script>
+        var all_tags = []
+        catedb.findOne({class: 'topic'}, (err, doc)=>{
+
+            for(var i=0; i<doc.tags.length; i++){
+                var topic_tag = document.createElement('span')
+                topic_tag.setAttribute('class', 'topic-tag')
+                topic_tag.setAttribute('id', doc.tags[i])
+                topic_tag.innerHTML = doc.tags[i]
+
+                document.querySelector('.tags-editor').appendChild(topic_tag)
+            }
+            console.log(current_paper)
+            paperdb.findOne({title: current_paper[0]}, (err, doc2)=>{
+                for(var i=0; i<doc2.tags.length; i++){
+                    if(doc.tags.indexOf(doc2.tags[i]) == -1){
+                        continue
+                    } else {
+                        var topic_belong_tag = document.querySelector('#'+doc2.tags[i])
+                        topic_belong_tag.setAttribute('class', 'topic-belong-tag')
+                    }
+                }
+            })
+        })
+
+        catedb.findOne({class: 'research'}, (err, doc)=>{
+
+            for(var i=0; i<doc.tags.length; i++){
+                var research_tag = document.createElement('span')
+                research_tag.setAttribute('class', 'research-tag')
+                research_tag.setAttribute('id', doc.tags[i])
+                research_tag.innerHTML = doc.tags[i]
+
+                document.querySelector('.tags-editor').appendChild(research_tag)
+            }
+
+            paperdb.findOne({title: current_paper[0]}, (err, doc2)=>{
+                for(var i=0; i<doc2.tags.length; i++){
+                    if(doc.tags.indexOf(doc2.tags[i]) == -1){
+                        continue
+                    } else {
+                        var research_belong_tag = document.querySelector('#'+doc2.tags[i])
+                        research_belong_tag.setAttribute('class', 'research-belong-tag')
+                    }
+                }
+            })
+        })
+
+
+    </script>
+</body>
+</html>

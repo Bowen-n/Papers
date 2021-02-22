@@ -76,6 +76,7 @@ function bindOverviewEditor() {
     bindEditTitle()
     bindEditUrl()
     bindEditRemark()
+    bindEditTags()
 }
 
 function disableStylePaste(dom) {
@@ -114,4 +115,11 @@ function bindEditRemark() {
         paperdb.update({title: current_paper[0]}, {$set: {remark: this.innerHTML}}, {})
     })
     disableStylePaste(edit_remark)
+}
+
+function bindEditTags() {
+    edit_tags = document.querySelector('#tags-add-icon')
+    edit_tags.addEventListener('click', function(){
+        window.open('./edit_tags.html', '_blank', 'height=250, width=400, left=700, top=400')
+    })
 }
