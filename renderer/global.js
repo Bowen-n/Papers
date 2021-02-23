@@ -1,5 +1,5 @@
 // imports
-const {remote, shell} = require('electron')
+const {remote, shell, ipcRenderer} = require('electron')
 const {dialog} = require('electron').remote
 const Datastore = require('nedb')
 const pdf = remote.require('pdf-parse')

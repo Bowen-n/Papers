@@ -1,3 +1,4 @@
+
 function addPapers() {
 
     dialog.showOpenDialog({
@@ -91,7 +92,7 @@ function bindEditTitle() {
     edit_title = document.querySelector('#title')
     edit_title.addEventListener('blur', function(){
         new_title = this.innerHTML
-        old_title = current_paper[0]
+        old_title = current_paper[0]        
         current_paper = [new_title]
         paperdb.update({title: old_title}, {$set: {title: new_title}}, {})
         displayPaperlist()
@@ -120,6 +121,17 @@ function bindEditRemark() {
 function bindEditTags() {
     edit_tags = document.querySelector('#tags-add-icon')
     edit_tags.addEventListener('click', function(){
-        window.open('./edit_tags.html', '_blank', 'height=250, width=400, left=700, top=400')
+        var sub_win = new remote.BrowserWindow({
+            width: 1000, minWidth: 600,
+            height: 700, minHeight: 300,
+            webPreferences: {
+                nodeIntegration: true,
+                enableRemoteModule:true
+            }
+        })
+        sub_win.loadFile('./html/edit_tags.html')
+        sub_win.webContents.on('did-finish-load', ()=>{
+            sub_win.webContents.send('msg', current_paper)
+        })
     })
 }

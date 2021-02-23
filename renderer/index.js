@@ -1,3 +1,4 @@
+
 function createLibraryButton(content, type) {
     var library_btn = document.createElement('span')
     library_btn.setAttribute('class', 'library-button')
@@ -52,7 +53,6 @@ function bindPaperButton(paper_btn) {
     var table = document.querySelector('.overview-table')
 
     paper_btn.onclick = function(){
-
         if(paper_btn.getAttribute('status') == 'up'){
             if(current_paper.length == 1){
                 up_btn = document.querySelector('#'+spaceToBar(current_paper[0]))
@@ -66,7 +66,6 @@ function bindPaperButton(paper_btn) {
         } else {
             paper_btn.setAttribute('status', 'up')
             paper_btn.setAttribute('style', 'color:rgb(112, 112, 112); background-color: transparent')
-            // current_paper.remove(paper_btn.innerHTML)
         }
 
         paperdb.findOne({title: this.innerHTML}, (err, docs)=>{
