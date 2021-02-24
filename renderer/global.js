@@ -21,6 +21,14 @@ function spaceToBar(text) {
 	return text
 }
 
+function displayList(list) {
+	var ret_str = ''
+	for(var i=0; i<list.length; i++){
+		ret_str = ret_str + list[i] + ' '
+	}
+	return ret_str
+}
+
 // prototype
 String.prototype.format = function (args) {
     return this.replace(/\{(\w+)\}/g, function (s, i) {

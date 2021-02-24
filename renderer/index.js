@@ -68,19 +68,20 @@ function bindPaperButton(paper_btn) {
             paper_btn.setAttribute('style', 'color:rgb(112, 112, 112); background-color: transparent')
         }
 
-        paperdb.findOne({title: this.innerHTML}, (err, docs)=>{
+        paperdb.findOne({title: this.innerHTML}, (err, doc)=>{
             table.style.display = 'table' // display paper info
             
-            var dataBuffer = fs.readFileSync(docs.path);
+            var dataBuffer = fs.readFileSync(doc.path);
             pdf(dataBuffer).then(data=>{
                 var abstract = extractAbstract(data.text)
                 document.querySelector('#abstract').innerHTML = abstract
             })
 
-            document.querySelector('#title').innerHTML = docs.title
-            document.querySelector('#url').innerHTML = docs.url
-            document.querySelector('#remark').innerHTML = docs.remark
-            // TODO
+            document.querySelector('#title').innerHTML = doc.title
+            document.querySelector('#url').innerHTML = doc.url
+            document.querySelector('#remark').innerHTML = doc.remark
+            document.querySelector('#tags').innerHTML = displayList(doc.tags)
+
         })
     }
 }
