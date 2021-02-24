@@ -1,0 +1,28 @@
+:root{
+    --color-bg: rgb(245, 245, 245);
+    --topic-button-bg: rgb(241, 150, 82);
+    --research-button-bg: rgb(79, 142, 247);
+}
+
+body{
+    margin-left: 10px;
+}
+
+span{
+    border: 1px solid black;
+    font-size: 16px;
+    line-height: 20px;
+    margin-right: 8px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.topic-belong-tag {
+    background-color: var(--topic-button-bg)
+}
+
+.research-belong-tag {
+    background-color: var(--research-button-bg);
+}

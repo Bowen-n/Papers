@@ -11,59 +11,56 @@
 </head>
 <body>
     <div class='tags-editor'>
+        <div class='topic-tags-editor'>
+            <h2>Topic Tags</h2>
+        </div>
+        <div class='research-tags-editor'>
+            <h2>Research Tags</h2>
+        </div>
 
     </div>
     <script src='../renderer/global.js'></script>
 
     <script>
+        var selected_tags = null
+        var current_paper = null
+
+        function displayTagsEditor() {
+            paperdb.findOne({title: current_paper[0]}, (err, doc_paper)=>{
+                selected_tags = doc_paper.tags
+                catedb.findOne({class: 'topic'}, (err, doc_topic)=>{
+                    for(var i=0; i<doc_topic.tags.length; i++){
+                        var topic_tag = document.createElement('span')
+                        if(doc_paper.tags.indexOf(doc_topic.tags[i]) == -1){
+                            topic_tag.setAttribute('class', 'topic-tag')
+                        } else {
+                            topic_tag.setAttribute('class', 'topic-belong-tag')
+                        }
+                        topic_tag.setAttribute('id', doc_topic.tags[i])
+                        topic_tag.innerHTML = doc_topic.tags[i]
+
+                        document.querySelector('.topic-tags-editor').appendChild(topic_tag)
+                    }
+                })
+                catedb.findOne({class: 'research'}, (err, doc_research)=>{
+                    for(var i=0; i<doc_research.tags.length; i++){
+                        var research_tag = document.createElement('span')
+                        if(doc_paper.tags.indexOf(doc_research.tags[i]) == -1){
+                            research_tag.setAttribute('class', 'research-tag')
+                        } else {
+                            research_tag.setAttribute('class', 'research-belong-tag')
+                        }
+                        research_tag.setAttribute('id', doc_research.tags[i])
+                        research_tag.innerHTML = doc_research.tags[i]
+                        document.querySelector('.research-tags-editor').appendChild(research_tag)
+                    }
+                })
+            })
+        }
+
         ipcRenderer.on('msg', (event, message)=>{
-            var current_paper = message
-            var all_tags = []
-            
-            catedb.findOne({class: 'topic'}, (err, doc)=>{
-
-                for(var i=0; i<doc.tags.length; i++){
-                    var topic_tag = document.createElement('span')
-                    topic_tag.setAttribute('class', 'topic-tag')
-                    topic_tag.setAttribute('id', doc.tags[i])
-                    topic_tag.innerHTML = doc.tags[i]
-
-                    document.querySelector('.tags-editor').appendChild(topic_tag)
-                }
-                paperdb.findOne({title: current_paper[0]}, (err, doc2)=>{
-                    for(var i=0; i<doc2.tags.length; i++){
-                        if(doc.tags.indexOf(doc2.tags[i]) == -1){
-                            continue
-                        } else {
-                            var topic_belong_tag = document.querySelector('#'+doc2.tags[i])
-                            topic_belong_tag.setAttribute('class', 'topic-belong-tag')
-                        }
-                    }
-                })
-            })
-
-            catedb.findOne({class: 'research'}, (err, doc)=>{
-
-                for(var i=0; i<doc.tags.length; i++){
-                    var research_tag = document.createElement('span')
-                    research_tag.setAttribute('class', 'research-tag')
-                    research_tag.setAttribute('id', doc.tags[i])
-                    research_tag.innerHTML = doc.tags[i]
-
-                    document.querySelector('.tags-editor').appendChild(research_tag)
-                }
-
-                paperdb.findOne({title: current_paper[0]}, (err, doc2)=>{
-                    for(var i=0; i<doc2.tags.length; i++){
-                        if(doc.tags.indexOf(doc2.tags[i]) == -1){
-                            continue
-                        } else {
-                            var research_belong_tag = document.querySelector('#'+doc2.tags[i])
-                            research_belong_tag.setAttribute('class', 'research-belong-tag')
-                        }
-                    }
-                })
-            })
+            current_paper = message
+            displayTagsEditor()
         })
 
     </script>
