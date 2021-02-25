@@ -8,6 +8,7 @@ const fs = require('fs')
 // vars
 var tags_filter = []
 var current_paper = []
+var clickFlag = null
 
 // databases
 var paperdb = new Datastore({ filename: 'database/database.bd', autoload: true })

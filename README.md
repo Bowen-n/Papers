@@ -23,3 +23,6 @@ Paper manage app built with Electron.
   - [x] Add
   - [x] Remove from one tag
   - [x] Delete from the whole database
+
+# Screenshot
+![demo](demo/demo.png)

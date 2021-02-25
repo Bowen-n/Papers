@@ -53,35 +53,49 @@ function bindPaperButton(paper_btn) {
     var table = document.querySelector('.overview-table')
 
     paper_btn.onclick = function(){
-        if(paper_btn.getAttribute('status') == 'up'){
-            if(current_paper.length == 1){
-                up_btn = document.querySelector('#'+spaceToBar(current_paper[0]))
-                up_btn.setAttribute('status', 'up')
-                up_btn.setAttribute('style', 'color:rgb(112, 112, 112); background-color: transparent')
-                current_paper = []
-            }
-            paper_btn.setAttribute('status', 'down')
-            paper_btn.setAttribute('style', 'color:white; background-color: rgb(79, 142, 247);')
-            current_paper.push(paper_btn.innerHTML)
-        } else {
-            paper_btn.setAttribute('status', 'up')
-            paper_btn.setAttribute('style', 'color:rgb(112, 112, 112); background-color: transparent')
+        if(clickFlag){
+            clickFlag = clearTimeout(clickFlag)
         }
+        clickFlag = setTimeout(()=>{
+            if(paper_btn.getAttribute('status') == 'up'){
+                if(current_paper.length == 1){
+                    up_btn = document.querySelector('#'+spaceToBar(current_paper[0]))
+                    up_btn.setAttribute('status', 'up')
+                    up_btn.setAttribute('style', 'color:rgb(112, 112, 112); background-color: transparent')
+                    current_paper = []
+                }
+                paper_btn.setAttribute('status', 'down')
+                paper_btn.setAttribute('style', 'color:white; background-color: rgb(79, 142, 247);')
+                current_paper.push(paper_btn.innerHTML)
+            } else {
+                paper_btn.setAttribute('status', 'up')
+                paper_btn.setAttribute('style', 'color:rgb(112, 112, 112); background-color: transparent')
+            }
 
-        paperdb.findOne({title: this.innerHTML}, (err, doc)=>{
-            table.style.display = 'table' // display paper info
-            
-            var dataBuffer = fs.readFileSync(doc.path);
-            pdf(dataBuffer).then(data=>{
-                var abstract = extractAbstract(data.text)
-                document.querySelector('#abstract').innerHTML = abstract
+            paperdb.findOne({title: this.innerHTML}, (err, doc)=>{
+                table.style.display = 'table' // display paper info
+                
+                var dataBuffer = fs.readFileSync(doc.path);
+                pdf(dataBuffer).then(data=>{
+                    var abstract = extractAbstract(data.text)
+                    document.querySelector('#abstract').innerHTML = abstract
+                })
+
+                document.querySelector('#title').innerHTML = doc.title
+                document.querySelector('#url').innerHTML = doc.url
+                document.querySelector('#remark').innerHTML = doc.remark
+                document.querySelector('#tags').innerHTML = displayList(doc.tags)
+
             })
+        }, 150)
+    }
 
-            document.querySelector('#title').innerHTML = doc.title
-            document.querySelector('#url').innerHTML = doc.url
-            document.querySelector('#remark').innerHTML = doc.remark
-            document.querySelector('#tags').innerHTML = displayList(doc.tags)
-
+    paper_btn.ondblclick = function(){
+        if(clickFlag){
+            clickFlag = clearTimeout(clickFlag)
+        }
+        paperdb.findOne({title: current_paper[0]}, (err, doc)=>{
+            shell.openPath(doc.path)
         })
     }
 }
