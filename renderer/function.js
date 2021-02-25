@@ -1,3 +1,4 @@
+
 function bindPaperlistFunc() {
     bindAddPapers()
     bindDeletePaper()
@@ -41,10 +42,30 @@ function bindAddPapers() {
     }
 }
 
-function deletePaper() {
-    paperdb.remove({title: current_paper[0]})
-    // refresh paperlist
+function _deletePaper(paper_btn){
+    // used in paper button right menu
+    paperdb.remove({title: paper_btn.innerHTML})
+    if(paper_btn.innerHTML == current_paper[0]){
+        current_paper = []
+        clearOverview()
+    }
+    
     displayPaperlist()
+}
+
+function deletePaper() {
+    // used by delete button, a paper must be selected
+    if(current_paper.length == 0){
+        dialog.showMessageBox({
+            type: 'warning',
+            message: 'A paper must be selected.',
+            buttons: ['OK']
+        })
+    }
+    paperdb.remove({title: current_paper[0]})
+    current_paper = []
+    displayPaperlist()
+    clearOverview()
 }
 
 function bindDeletePaper() {

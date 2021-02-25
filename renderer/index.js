@@ -87,7 +87,7 @@ function bindPaperButton(paper_btn) {
                 document.querySelector('#tags').innerHTML = displayList(doc.tags)
 
             })
-        }, 150)
+        }, 120)
     }
 
     paper_btn.ondblclick = function(){
@@ -98,6 +98,14 @@ function bindPaperButton(paper_btn) {
             shell.openPath(doc.path)
         })
     }
+
+    paper_btn.addEventListener('contextmenu', function(e){
+        e.preventDefault()
+        var paperBtnMenu = Menu.buildFromTemplate(
+            paperBtnMenuTemplate(paper_btn))
+        paperBtnMenu.popup({window: remote.getCurrentWindow()})
+    })
+
 }
 
 function clearPaperList() {

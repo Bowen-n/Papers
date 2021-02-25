@@ -25,6 +25,10 @@ Paper manage app built with Electron.
   - [x] Add
   - [x] Select and delete
   - [ ] Select multiple and delete
+  - [ ] Right menu
+    - [x] Copy title
+    - [x] Delete
+    - [ ] Open
 
 # Screenshot
 ![demo](demo/demo.png)
