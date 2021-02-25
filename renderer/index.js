@@ -178,8 +178,7 @@ window.onload = function() {
     displayPaperlist()
 
     // func
-    bindLibraryRightMenu()
-    bindAddPapers()
+    bindPaperlistFunc()
 
     // overview func
     bindOverviewEditor()

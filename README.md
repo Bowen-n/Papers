@@ -13,16 +13,18 @@ Paper manage app built with Electron.
   - [x] Paper list
   - [x] Overview
 - [ ] **Overview** for paper
-  - [ ] Title
+  - [x] Title
   - [x] Abstract
-  - [ ] Url
+  - [x] Url
   - [ ] Tags
+    - [ ] Add/Remove tags
   - [ ] Remark
-- [ ] Multiple Tags for Paper
+    - [x] Edit remark
+    - [ ] Link to remark file
 - [x] **Operation** on paper
   - [x] Add
-  - [x] Remove from one tag
-  - [x] Delete from the whole database
+  - [x] Select and delete
+  - [ ] Select multiple and delete
 
 # Screenshot
 ![demo](demo/demo.png)
