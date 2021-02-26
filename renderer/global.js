@@ -31,11 +31,17 @@ function displayList(list) {
 }
 
 // prototype
-String.prototype.format = function (args) {
-    return this.replace(/\{(\w+)\}/g, function (s, i) {
-        return args[i];
-    });
-};
+if (!String.prototype.format) {
+	String.prototype.format = function() {
+	  	var args = arguments;
+	  	return this.replace(/{(\d+)}/g, function(match, number) { 
+		return typeof args[number] != 'undefined'
+		  	? args[number]
+		  	: match
+		;
+	  });
+	};
+}
 
 Array.prototype.indexOf = function(val) {
 	for (var i = 0; i < this.length; i++) {

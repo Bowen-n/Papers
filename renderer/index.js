@@ -40,12 +40,12 @@ function bindLibraryButton(library_btn) {
     }
 }
 
-function createPaperButton(content) {
+function createPaperButton(doc) {
     var paper_btn = document.createElement('span')
     paper_btn.setAttribute('class', 'paperlist-button')
-    paper_btn.setAttribute('id', spaceToBar(content))
+    paper_btn.setAttribute('id', doc._id)
     paper_btn.setAttribute('status', 'up')
-    paper_btn.innerHTML = content
+    paper_btn.innerHTML = doc.title
     return paper_btn
 }
 
@@ -59,20 +59,20 @@ function bindPaperButton(paper_btn) {
         clickFlag = setTimeout(()=>{
             if(paper_btn.getAttribute('status') == 'up'){
                 if(current_paper.length == 1){
-                    up_btn = document.querySelector('#'+spaceToBar(current_paper[0]))
+                    up_btn = document.getElementById(current_paper[0])
                     up_btn.setAttribute('status', 'up')
                     up_btn.setAttribute('style', 'color:rgb(112, 112, 112); background-color: transparent')
                     current_paper = []
                 }
                 paper_btn.setAttribute('status', 'down')
                 paper_btn.setAttribute('style', 'color:white; background-color: rgb(79, 142, 247);')
-                current_paper.push(paper_btn.innerHTML)
+                current_paper.push(this.getAttribute('id'))
             } else {
                 paper_btn.setAttribute('status', 'up')
                 paper_btn.setAttribute('style', 'color:rgb(112, 112, 112); background-color: transparent')
             }
 
-            paperdb.findOne({title: this.innerHTML}, (err, doc)=>{
+            paperdb.findOne({_id: this.getAttribute('id')}, (err, doc)=>{
                 table.style.display = 'table' // display paper info
                 
                 var dataBuffer = fs.readFileSync(doc.path);
@@ -94,7 +94,7 @@ function bindPaperButton(paper_btn) {
         if(clickFlag){
             clickFlag = clearTimeout(clickFlag)
         }
-        paperdb.findOne({title: current_paper[0]}, (err, doc)=>{
+        paperdb.findOne({_id: current_paper[0]}, (err, doc)=>{
             shell.openPath(doc.path)
         })
     }
@@ -171,7 +171,7 @@ function displayPaperlist() {
             return
         }
         for(var i=0; i<docs.length; i++){
-            paper_btn = createPaperButton(docs[i].title)
+            paper_btn = createPaperButton(docs[i])
             bindPaperButton(paper_btn)
             document.querySelector('.paperlist').appendChild(paper_btn)
         }

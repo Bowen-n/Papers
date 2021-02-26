@@ -26,7 +26,7 @@
         var current_paper = null
 
         function displayTagsEditor() {
-            paperdb.findOne({title: current_paper[0]}, (err, doc_paper)=>{
+            paperdb.findOne({_id: current_paper[0]}, (err, doc_paper)=>{
                 selected_tags = doc_paper.tags
                 catedb.findOne({class: 'topic'}, (err, doc_topic)=>{
                     for(var i=0; i<doc_topic.tags.length; i++){

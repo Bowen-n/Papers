@@ -2,6 +2,7 @@
 function bindPaperlistFunc() {
     bindAddPapers()
     bindDeletePaper()
+    bindSearchPaper()
 }
 
 function addPapers() {
@@ -44,8 +45,10 @@ function bindAddPapers() {
 
 function _deletePaper(paper_btn){
     // used in paper button right menu
-    paperdb.remove({title: paper_btn.innerHTML})
-    if(paper_btn.innerHTML == current_paper[0]){
+    // selected paper may not be current_paper[0]
+    paper_btn_id = paper_btn.getAttribute('id')
+    paperdb.remove({_id: paper_btn_id})
+    if(paper_btn_id == current_paper[0]){
         current_paper = []
         clearOverview()
     }
@@ -55,6 +58,7 @@ function _deletePaper(paper_btn){
 
 function deletePaper() {
     // used by delete button, a paper must be selected
+    // selected paper must be current_paper[0]
     if(current_paper.length == 0){
         dialog.showMessageBox({
             type: 'warning',
@@ -62,7 +66,7 @@ function deletePaper() {
             buttons: ['OK']
         })
     }
-    paperdb.remove({title: current_paper[0]})
+    paperdb.remove({_id: current_paper[0]})
     current_paper = []
     displayPaperlist()
     clearOverview()
@@ -71,6 +75,35 @@ function deletePaper() {
 function bindDeletePaper() {
     document.querySelector('#delete-paper').onclick = ()=>{
         deletePaper()
+    }
+}
+
+function searchGoogleScholarUrl(keywords) {
+    return `https://scholar.google.com/scholar?hl=zh-CN&as_sdt=0%2C5&q=${keywords}&btnG=`
+}
+
+function _searchPaper(paper_btn) {
+    paperdb.findOne({_id: paper_btn.getAttribute('id')}, (err, doc)=>{
+        shell.openExternal(searchGoogleScholarUrl(doc.title))
+    })
+}
+
+function searchPaper() {
+    if(current_paper.length == 0){
+        dialog.showMessageBox({
+            type: 'warning',
+            message: 'A paper must be selected.',
+            buttons: ['OK']
+        })
+    }
+    paperdb.findOne({_id: current_paper[0]}, (err, doc)=>{
+        shell.openExternal(searchGoogleScholarUrl(doc.title))
+    })
+}
+
+function bindSearchPaper() {
+    document.querySelector('#search-paper').onclick = ()=>{
+        searchPaper()
     }
 }
 
@@ -91,11 +124,8 @@ function disableStylePaste(dom) {
 
 function bindEditTitle() {
     edit_title = document.querySelector('#title')
-    edit_title.addEventListener('blur', function(){
-        new_title = this.innerHTML
-        old_title = current_paper[0]        
-        current_paper = [new_title]
-        paperdb.update({title: old_title}, {$set: {title: new_title}}, {})
+    edit_title.addEventListener('blur', function(){    
+        paperdb.update({_id: current_paper[0]}, {$set: {title: this.innerHTML}}, {})
         displayPaperlist()
     })
 
@@ -106,7 +136,7 @@ function bindEditTitle() {
 function bindEditUrl() {
     edit_url = document.querySelector('#url')
     edit_url.addEventListener('blur', function(){
-        paperdb.update({title: current_paper[0]}, {$set: {url: this.innerHTML}}, {})
+        paperdb.update({_id: current_paper[0]}, {$set: {url: this.innerHTML}}, {})
     })
     disableStylePaste(edit_url)
 }
@@ -114,7 +144,7 @@ function bindEditUrl() {
 function bindEditRemark() {
     edit_remark = document.querySelector('#remark')
     edit_remark.addEventListener('blur', function(){
-        paperdb.update({title: current_paper[0]}, {$set: {remark: this.innerHTML}}, {})
+        paperdb.update({_id: current_paper[0]}, {$set: {remark: this.innerHTML}}, {})
     })
     disableStylePaste(edit_remark)
 }
