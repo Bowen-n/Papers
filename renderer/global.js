@@ -13,6 +13,8 @@ var clickFlag = null
 // databases
 var paperdb = new Datastore({ filename: 'database/database.bd', autoload: true })
 var catedb = new Datastore({ filename: 'database/category.bd', autoload: true})
+paperdb.persistence.setAutocompactionInterval(1000)
+catedb.persistence.setAutocompactionInterval(1000)
 
 // utils
 function spaceToBar(text) {

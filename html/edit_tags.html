@@ -24,6 +24,7 @@
     <script>
         var selected_tags = null
         var current_paper = null
+        var main_window_id = null
 
         function displayTagsEditor() {
             paperdb.findOne({_id: current_paper[0]}, (err, doc_paper)=>{
@@ -38,6 +39,7 @@
                         }
                         topic_tag.setAttribute('id', doc_topic.tags[i])
                         topic_tag.innerHTML = doc_topic.tags[i]
+                        bindEditTag(topic_tag)
 
                         document.querySelector('.topic-tags-editor').appendChild(topic_tag)
                     }
@@ -52,16 +54,60 @@
                         }
                         research_tag.setAttribute('id', doc_research.tags[i])
                         research_tag.innerHTML = doc_research.tags[i]
+                        bindEditTag(research_tag)
+
                         document.querySelector('.research-tags-editor').appendChild(research_tag)
                     }
                 })
             })
         }
 
+        function editTags(tag_btn) {
+            switch(tag_btn.getAttribute('class')){
+                case 'topic-tag':{
+                    tag_btn.setAttribute('class', 'topic-belong-tag')
+                    selected_tags.push(tag_btn.getAttribute('id'))
+                    break
+                }
+                case 'topic-belong-tag':{
+                    tag_btn.setAttribute('class', 'topic-tag')
+                    selected_tags.remove(tag_btn.getAttribute('id'))
+                    break
+                }
+                case 'research-tag':{
+                    tag_btn.setAttribute('class', 'research-belong-tag')
+                    selected_tags.push(tag_btn.getAttribute('id'))
+                    break
+                }
+                case 'research-belong-tag':{
+                    tag_btn.setAttribute('class', 'research-tag')
+                    selected_tags.remove(tag_btn.getAttribute('id'))
+                    break
+                }    
+                default: break        
+            }
+        }
+
+        function bindEditTag(tag_btn) {
+            tag_btn.onclick = function(){
+                editTags(this)
+            }
+        }
+
+        function updateTags() {
+            paperdb.update({_id: current_paper[0]}, {$set: {tags: selected_tags}}, {})
+        }
+
         ipcRenderer.on('msg', (event, message)=>{
-            current_paper = message
+            current_paper = message[0]
+            main_window_id = message[1]
             displayTagsEditor()
         })
+
+        window.onunload = ()=>{
+            // updateTags()
+            ipcRenderer.sendTo(main_window_id, 'utags', selected_tags)
+        }
 
     </script>
 </body>

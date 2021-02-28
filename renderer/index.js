@@ -1,10 +1,8 @@
 
 function createLibraryButton(content, type) {
     var library_btn = document.createElement('span')
-    library_btn.setAttribute('class', 'library-button')
+    library_btn.setAttribute('class', 'library-'+type+'-button')
     library_btn.setAttribute('id', spaceToBar(content))
-    library_btn.setAttribute('type', type)
-    library_btn.setAttribute('status', 'up')
     library_btn.innerHTML = content
     return library_btn
 }
@@ -12,31 +10,34 @@ function createLibraryButton(content, type) {
 function bindLibraryButton(library_btn) {
 
     library_btn.onclick = function(){
-        if(library_btn.getAttribute('type') == 'topic'){
-            if(library_btn.getAttribute('status') == 'up'){
-                library_btn.setAttribute('status', 'down')
-                library_btn.setAttribute('style', 'color:white; background-color: rgb(241, 150, 82);')
+        switch(library_btn.getAttribute('class')){
+            case 'library-topic-button':{
+                library_btn.setAttribute('class', 'library-topic-button-selected')
                 tags_filter.push(library_btn.innerHTML)
-            } else {
-                library_btn.setAttribute('status', 'up')
-                library_btn.setAttribute('style', 'color:rgb(112, 112, 112); background-color: transparent')
-                tags_filter.remove(library_btn.innerHTML)
+                break
             }
-        } else {
-            if(library_btn.getAttribute('status') == 'up'){
-                library_btn.setAttribute('status', 'down')
-                library_btn.setAttribute('style', 'color:white; background-color: rgb(79, 142, 247);')
+            case 'library-topic-button-selected':{
+                library_btn.setAttribute('class', 'library-topic-button')
+                tags_filter.remove(library_btn.innerHTML)
+                break
+            }
+            case 'library-research-button':{
+                library_btn.setAttribute('class', 'library-research-button-selected')
                 tags_filter.push(library_btn.innerHTML)
-            } else {
-                library_btn.setAttribute('status', 'up')
-                library_btn.setAttribute('style', 'color:rgb(112, 112, 112); background-color: transparent')
-                tags_filter.remove(library_btn.innerHTML)
+                break
             }
+            case 'library-research-button-selected':{
+                library_btn.setAttribute('class', 'library-research-button')
+                tags_filter.remove(library_btn.innerHTML)
+                break
+            }
+            default: break
         }
 
+        current_paper = []
         displayPaperlist()
         clearOverview()
-        current_paper = []
+        
     }
 }
 
@@ -44,49 +45,46 @@ function createPaperButton(doc) {
     var paper_btn = document.createElement('span')
     paper_btn.setAttribute('class', 'paperlist-button')
     paper_btn.setAttribute('id', doc._id)
-    paper_btn.setAttribute('status', 'up')
     paper_btn.innerHTML = doc.title
     return paper_btn
 }
 
 function bindPaperButton(paper_btn) {
-    var table = document.querySelector('.overview-table')
 
     paper_btn.onclick = function(){
         if(clickFlag){
             clickFlag = clearTimeout(clickFlag)
         }
         clickFlag = setTimeout(()=>{
-            if(paper_btn.getAttribute('status') == 'up'){
+            if(paper_btn.getAttribute('class') == 'paperlist-button'){
                 if(current_paper.length == 1){
-                    up_btn = document.getElementById(current_paper[0])
-                    up_btn.setAttribute('status', 'up')
-                    up_btn.setAttribute('style', 'color:rgb(112, 112, 112); background-color: transparent')
+                    document.getElementById(current_paper[0]).setAttribute('class', 'paperlist-button')
                     current_paper = []
                 }
-                paper_btn.setAttribute('status', 'down')
-                paper_btn.setAttribute('style', 'color:white; background-color: rgb(79, 142, 247);')
-                current_paper.push(this.getAttribute('id'))
+                paper_btn.setAttribute('class', 'paperlist-button-selected')
+                current_paper.push(paper_btn.getAttribute('id'))
+
             } else {
-                paper_btn.setAttribute('status', 'up')
-                paper_btn.setAttribute('style', 'color:rgb(112, 112, 112); background-color: transparent')
+                paper_btn.setAttribute('class', 'paperlist-button')
             }
 
-            paperdb.findOne({_id: this.getAttribute('id')}, (err, doc)=>{
-                table.style.display = 'table' // display paper info
-                
-                var dataBuffer = fs.readFileSync(doc.path);
-                pdf(dataBuffer).then(data=>{
-                    var abstract = extractAbstract(data.text)
-                    document.querySelector('#abstract').innerHTML = abstract
-                })
+            // if(paper_btn.getAttribute('status') == 'up'){
+            //     if(current_paper.length == 1){
+            //         up_btn = document.getElementById(current_paper[0])
+            //         up_btn.setAttribute('status', 'up')
+            //         up_btn.setAttribute('style', 'color:rgb(112, 112, 112); background-color: transparent')
+            //         current_paper = []
+            //     }
+            //     paper_btn.setAttribute('status', 'down')
+            //     paper_btn.setAttribute('style', 'color:white; background-color: rgb(79, 142, 247);')
+            //     current_paper.push(this.getAttribute('id'))
+            // } else {
+            //     paper_btn.setAttribute('status', 'up')
+            //     paper_btn.setAttribute('style', 'color:rgb(112, 112, 112); background-color: transparent')
+            // }
 
-                document.querySelector('#title').innerHTML = doc.title
-                document.querySelector('#url').innerHTML = doc.url
-                document.querySelector('#remark').innerHTML = doc.remark
-                document.querySelector('#tags').innerHTML = displayList(doc.tags)
+            updateOverview(this.getAttribute('id'))
 
-            })
         }, 120)
     }
 
@@ -108,11 +106,34 @@ function bindPaperButton(paper_btn) {
 
 }
 
+function updateOverview(paper_id) {
+    if(current_paper.length == 0){
+        return
+    }
+    paperdb.findOne({_id: paper_id}, (err, doc)=>{
+        document.querySelector('.overview-table').style.display = 'table'
+
+        var dataBuffer = fs.readFileSync(doc.path);
+        pdf(dataBuffer).then(data=>{
+            var abstract = extractAbstract(data.text)
+            document.querySelector('#abstract').innerHTML = abstract
+        })
+
+        document.querySelector('#title').innerHTML = doc.title
+        document.querySelector('#url').innerHTML = doc.url
+        document.querySelector('#remark').innerHTML = doc.remark
+        document.querySelector('#tags').innerHTML = displayList(doc.tags)
+    })
+}
+
 function clearPaperList() {
     var paperlist = document.querySelector('.paperlist')
-    var paper_btn_list = document.querySelectorAll('.paperlist-button')
-    for(var j=0; j<paper_btn_list.length; j++){
-        paperlist.removeChild(paper_btn_list[j])
+    var paperlist_button = ['.paperlist-button', '.paperlist-button-selected']
+    for(var i=0; i<paperlist_button.length; i++){
+        var paper_btn_list = document.querySelectorAll(paperlist_button[i])
+        for(var j=0; j<paper_btn_list.length; j++){
+            paperlist.removeChild(paper_btn_list[j])
+        }
     }
 }
 

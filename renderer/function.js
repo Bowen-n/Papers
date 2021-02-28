@@ -162,7 +162,14 @@ function bindEditTags() {
         })
         sub_win.loadFile('./html/edit_tags.html')
         sub_win.webContents.on('did-finish-load', ()=>{
-            sub_win.webContents.send('msg', current_paper)
+            var message = [current_paper, remote.getCurrentWindow().webContents.id]
+            sub_win.webContents.send('msg', message)
+        })
+    })
+
+    ipcRenderer.on('utags', (event, new_tags)=>{
+        paperdb.update({_id: current_paper[0]}, {$set: {tags: new_tags}}, {}, ()=>{
+            updateOverview(current_paper[0])
         })
     })
 }

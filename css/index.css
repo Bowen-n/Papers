@@ -67,7 +67,12 @@
     margin-bottom: 15px;
 }
 
-.library-button, .paperlist-button{
+.library-topic-button, 
+.library-research-button,
+.library-topic-button-selected,
+.library-research-button-selected,
+.paperlist-button,
+.paperlist-button-selected{
     display: block;
     width: 100%;
     background-color: transparent;
@@ -90,8 +95,26 @@
     text-indent: 15px;
 }
 
-.library-button:hover, .paperlist-button:hover{
+.library-topic-button:hover,
+.library-research-button:hover,
+.paperlist-button:hover{
     background-color: var(--button-hover);
+}
+
+.library-topic-button-selected{
+    background-color: var(--paperlist-button-selected);
+    color: white;
+}
+
+.library-research-button-selected{
+    background-color: var(--library-button-selected);
+    color: white;
+}
+
+.paperlist-button-selected{
+    background-color: var(--paperlist-button-selected);
+    color: white;
+    text-indent: 15px;
 }
 
 .function{

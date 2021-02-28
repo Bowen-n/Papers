@@ -17,8 +17,8 @@ Paper manage app built with Electron.
   - [x] Abstract
   - [ ] Url
     - [ ] Open url with browser
-  - [ ] Tags
-    - [ ] Add/Remove tags
+  - [x] Tags
+    - [x] Add/Remove tags
   - [ ] Remark
     - [x] Edit remark
     - [ ] Link to remark file
@@ -26,7 +26,7 @@ Paper manage app built with Electron.
   - [x] Add
   - [x] Select and delete
   - [ ] Select multiple and delete
-  - [ ] Right menu
+  - [x] Right menu
     - [x] Copy title
     - [x] Delete
     - [x] Open
