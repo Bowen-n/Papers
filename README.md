@@ -15,6 +15,8 @@ Paper manage app built with Electron.
 - [ ] **Overview** for paper
   - [x] Title
   - [x] Abstract
+    - [x] Extract abstract automatically
+  - [x] Publisher
   - [ ] Url
     - [ ] Open url with browser
   - [x] Tags

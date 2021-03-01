@@ -68,21 +68,6 @@ function bindPaperButton(paper_btn) {
                 paper_btn.setAttribute('class', 'paperlist-button')
             }
 
-            // if(paper_btn.getAttribute('status') == 'up'){
-            //     if(current_paper.length == 1){
-            //         up_btn = document.getElementById(current_paper[0])
-            //         up_btn.setAttribute('status', 'up')
-            //         up_btn.setAttribute('style', 'color:rgb(112, 112, 112); background-color: transparent')
-            //         current_paper = []
-            //     }
-            //     paper_btn.setAttribute('status', 'down')
-            //     paper_btn.setAttribute('style', 'color:white; background-color: rgb(79, 142, 247);')
-            //     current_paper.push(this.getAttribute('id'))
-            // } else {
-            //     paper_btn.setAttribute('status', 'up')
-            //     paper_btn.setAttribute('style', 'color:rgb(112, 112, 112); background-color: transparent')
-            // }
-
             updateOverview(this.getAttribute('id'))
 
         }, 120)
@@ -111,15 +96,22 @@ function updateOverview(paper_id) {
         return
     }
     paperdb.findOne({_id: paper_id}, (err, doc)=>{
+        // display overview
         document.querySelector('.overview-table').style.display = 'table'
 
-        var dataBuffer = fs.readFileSync(doc.path);
-        pdf(dataBuffer).then(data=>{
-            var abstract = extractAbstract(data.text)
-            document.querySelector('#abstract').innerHTML = abstract
-        })
+        if(doc.abstract != null){
+            document.querySelector('#abstract').innerHTML = doc.abstract
+        } else {
+            var dataBuffer = fs.readFileSync(doc.path);
+            pdf(dataBuffer).then(data=>{
+                var abstract = extractAbstract(data.text)
+                document.querySelector('#abstract').innerHTML = abstract
+                paperdb.update({_id: paper_id}, {$set: {abstract: abstract}}, {})
+            })
+        }
 
         document.querySelector('#title').innerHTML = doc.title
+        document.querySelector('#publisher').innerHTML = doc.publisher
         document.querySelector('#url').innerHTML = doc.url
         document.querySelector('#remark').innerHTML = doc.remark
         document.querySelector('#tags').innerHTML = displayList(doc.tags)

@@ -17,16 +17,20 @@ function addPapers() {
         for(var i=0; i<filepath_list.length; i++){
             var splitted = filepath_list[i].split('/')
             var title_path = splitted[splitted.length-1]
-
+                
             var new_doc = {
                 title: title_path,
-                author: null, url: null,
+                author: null,
+                abstract: null,
+                publisher: null,
+                url: null,
                 path: filepath_list[i],
                 tags: [],
                 remark: null
             }
 
             paperdb.insert(new_doc)
+
         }
 
         // refresh paperlist
@@ -109,6 +113,8 @@ function bindSearchPaper() {
 
 function bindOverviewEditor() {
     bindEditTitle()
+    bindEditAbstract()
+    bindEditPublisher()
     bindEditUrl()
     bindEditRemark()
     bindEditTags()
@@ -131,6 +137,22 @@ function bindEditTitle() {
 
     // disable paste with text style
     disableStylePaste(edit_title)
+}
+
+function bindEditAbstract() {
+    edit_abstract = document.querySelector('#abstract')
+    edit_abstract.addEventListener('blur', function(){
+        paperdb.update({_id: current_paper[0]}, {$set: {abstract: this.innerHTML}}, {})
+    })
+    disableStylePaste(edit_abstract)
+}
+
+function bindEditPublisher() {
+    edit_publisher = document.querySelector('#publisher')
+    edit_publisher.addEventListener('blur', function(){
+        paperdb.update({_id: current_paper[0]}, {$set: {publisher: this.innerHTML}}, {})
+    })
+    disableStylePaste(edit_publisher)
 }
 
 function bindEditUrl() {
