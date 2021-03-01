@@ -17,8 +17,7 @@ Paper manage app built with Electron.
   - [x] Abstract
     - [x] Extract abstract automatically
   - [x] Publisher
-  - [ ] Url
-    - [ ] Open url with browser
+  - [x] Url
   - [x] Tags
     - [x] Add/Remove tags
   - [ ] Remark
@@ -32,8 +31,10 @@ Paper manage app built with Electron.
     - [x] Copy title
     - [x] Delete
     - [x] Open
-    - [x] Search
+    - [x] Search with Google Scholar
+    - [x] Open Url
   - [x] Search with Google Scholar
+  - [x] Delete
 
 # Screenshot
 ![demo](demo/demo.png)
