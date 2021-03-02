@@ -132,10 +132,15 @@ function clearPaperList() {
 }
 
 function clearLibrary() {
-    var library = document.querySelector('.library')
-    var library_btn_list = document.querySelectorAll('.library-button')
-    for(var j=0; j<library_btn_list.length; j++){
-        library.removeChild(library_btn_list[j])
+    var library_topic = document.querySelector('.library-topic')
+    var library_research = document.querySelector('.library-research')
+    var library_topic_btns = document.querySelectorAll('.library-topic-button')
+    var library_research_btns = document.querySelectorAll('.library-research-button')
+    for(var i=0; i<library_topic_btns.length; i++){
+        library_topic.removeChild(library_topic_btns[i])
+    }
+    for(var j=0; j<library_research_btns.length; j++){
+        library_research.removeChild(library_research_btns[j])
     }
 }
 
@@ -148,12 +153,13 @@ function clearOverview() {
 // display library
 // topic tags and research tags
 function displayLibrary() {
-    // clearLibrary()
+    clearLibrary()
     clearOverview()
     var library_topic = document.querySelector('.library-topic')
     var library_research = document.querySelector('.library-research')
 
     catedb.findOne({class: 'topic'}, (err, doc)=>{
+        console.log(doc.tags)
         var topic_tags = doc.tags
         for(var i=0; i<topic_tags.length; i++){
             var library_btn = createLibraryButton(topic_tags[i], 'topic')
@@ -163,12 +169,19 @@ function displayLibrary() {
     })
 
     catedb.findOne({class: 'research'}, (err, doc)=>{
+        console.log(doc.tags)
         var research_tags = doc.tags
         for(var i=0; i<research_tags.length; i++){
             var research_btn = createLibraryButton(research_tags[i], 'research')
             bindLibraryButton(research_btn)
             library_research.appendChild(research_btn)
         }
+    })
+
+    document.querySelector('.library').addEventListener('contextmenu', function(e){
+        e.preventDefault()
+        var libraryMenu = Menu.buildFromTemplate(libraryMenuTemplate())
+        libraryMenu.popup({window: remote.getCurrentWindow()})
     })
 }
 
@@ -205,4 +218,5 @@ window.onload = function() {
 
     // overview func
     bindOverviewEditor()
+
 }

@@ -15,11 +15,7 @@ function paperBtnMenuTemplate(paper_btn) {
             click: ()=>{ 
                 paperdb.findOne({title: paper_btn.innerHTML}, (err, doc)=>{
                     if(doc.url == null){
-                        dialog.showMessageBox({
-                            type: 'warning',
-                            message: 'Url is empty.',
-                            buttons: ['OK']
-                        })
+                        showWarning('Url is empty.')
                     } else {
                         shell.openExternal(doc.url)
                     }
@@ -45,3 +41,21 @@ function paperBtnMenuTemplate(paper_btn) {
     return template
 }
 
+function libraryMenuTemplate(){
+    var template = [
+        {
+            label: 'Add Tag',
+            submenu: [
+                {
+                    label: 'Add Topic Tag',
+                    click: ()=>{ addGlobalTag('topic') }
+                },
+                {
+                    label: 'Add Research Tag',
+                    click: ()=>{ addGlobalTag('research')}
+                }
+            ]
+        }
+    ]
+    return template
+}

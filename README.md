@@ -10,6 +10,8 @@ Paper manage app built with Electron.
 # Overview
 - [x] UI
   - [x] Library
+    - [ ] Add tags
+    - [ ] Remove tags
   - [x] Paper list
   - [x] Overview
 - [ ] **Overview** for paper
@@ -39,3 +41,6 @@ Paper manage app built with Electron.
 
 # Screenshot
 ![demo](demo/demo.png)
+
+# TODO
+- [ ] Add global tags bug!!!

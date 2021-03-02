@@ -94,10 +94,6 @@
             }
         }
 
-        function updateTags() {
-            paperdb.update({_id: current_paper[0]}, {$set: {tags: selected_tags}}, {})
-        }
-
         ipcRenderer.on('msg', (event, message)=>{
             current_paper = message[0]
             main_window_id = message[1]

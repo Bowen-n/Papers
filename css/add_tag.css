@@ -1,0 +1,31 @@
+.add-tag{
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+span{
+    font-size: 18px;
+    display: inline-block;
+}
+
+button{
+    font-size: 14px;
+}
+
+#prompt{
+    margin-right: 5px;
+}
+
+#input{
+    width: 200px;
+    font-size: 18px;
+    border: 1px solid black;
+}
+
+.button-div{
+    margin-top: 20px;
+}
+
+#status{
+    margin-top: 20px;
+}

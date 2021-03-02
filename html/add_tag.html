@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="../css/global.css">
+    <link rel="stylesheet" type="text/css" href="../css/add_tag.css">
+    <title>Tags Editor</title>
+</head>
+<body>
+    <div class='add-tag'>
+        <span id='prompt'>Input</span>
+        <span id='input' contenteditable="true"></span>
+        <div class='button-div'>
+            <button id='confirm'>Confirm</button>
+            <button id='cancel'>Cancel</button>
+        </div>
+        <span id='status'></span>
+    </div>
+
+    <script src='../renderer/global.js'></script>
+    <script>
+        var exist_tags = null
+        var tag_type = null
+        var main_window_id = null
+        var new_tag = null
+
+        ipcRenderer.on('msg', (event, message)=>{
+            console.log(message)
+            tag_type = message.type
+            main_window_id = message.win_id
+
+            document.querySelector('#prompt').innerHTML = `Input ${tag_type} tag:`            
+            catedb.findOne({class: tag_type}, (err, doc)=>{
+                exist_tags = doc.tags
+
+                bindConfirm()
+                
+            })
+        })
+
+        ipcRenderer.on('status', (event, message)=>{
+            document.querySelector('#status').innerHTML = `Add ${tag_type} tag ${message} successfully.`
+        })
+
+        function bindCancel(){
+            document.querySelectorAll('#cancel').onclick = ()=>{
+                window.close()
+            }
+        }
+
+        function bindConfirm(){
+            document.querySelector('#confirm').onclick = ()=>{
+                confirm()
+            }
+            document.querySelector('#input').onkeydown = (e)=>{
+                if(e.keyCode == '13'){
+                    e.preventDefault()
+                    confirm()
+                }
+            }
+        }
+
+        function confirm(){
+            new_tag = document.querySelector('#input').innerHTML
+            if(exist_tags.indexOf(new_tag) != -1){
+                showWarning('This tag already exists.')
+            } else {
+                exist_tags.push(new_tag)
+                var msg = {
+                    type: tag_type,
+                    new_tag: new_tag,
+                    win_id: remote.getCurrentWindow().webContents.id
+                }
+                ipcRenderer.sendTo(main_window_id, 'global_tags', msg)
+            }
+        }
+
+        // window.onunload = ()=>{
+        //     ipcRenderer.sendTo(main_window_id, 'global_tags', selected_tags)
+        // }
+
+    </script>
+</body>
+</html>

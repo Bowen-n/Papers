@@ -210,3 +210,36 @@ function bindEditTags() {
         })
     })
 }
+
+function addGlobalTag(type) {
+    var sub_win = new remote.BrowserWindow({
+        width: 500, minWidth: 500,
+        height: 300, minHeight: 300,
+        webPreferences: {
+            nodeIntegration: true,
+            enableRemoteModule: true
+        }
+    })
+    sub_win.loadFile('./html/add_tag.html')
+    sub_win.webContents.on('did-finish-load', ()=>{
+        var message = {
+            type: type,
+            win_id: remote.getCurrentWindow().webContents.id
+        }
+        sub_win.webContents.send('msg', message)
+        sub_win.on('close', ()=>{
+            sub_win = null
+        })
+    })
+
+    ipcRenderer.on('global_tags', (event, msg)=>{
+        var tag_type = msg.type
+        var new_tag = msg.new_tag
+        var sub_win_id = msg.win_id
+        console.log(tag_type)
+        catedb.update({class: tag_type}, {$push: {tags: new_tag}}, {}, (err)=>{
+            ipcRenderer.sendTo(sub_win_id, 'status', new_tag)
+            displayLibrary()
+        })
+    })
+}
