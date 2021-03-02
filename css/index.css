@@ -61,6 +61,14 @@
     float: left;
 }
 
+.paperlist-paper{
+    height: 100%;
+}
+
+#paper-drag{
+    background-color: rgb(222 221 221 / 75%);
+}
+
 .library-topic{
     border-bottom: 1px solid var(--color-border);
     padding-bottom: 15px;

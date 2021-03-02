@@ -32,6 +32,13 @@ function displayList(list) {
 	return ret_str
 }
 
+function showWarning(message) {
+	dialog.showMessageBox({
+		type: 'warning',
+		message: message,
+		buttons: ['OK']
+	})
+}
 
 Array.prototype.indexOf = function(val) {
 	for (var i = 0; i < this.length; i++) {

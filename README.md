@@ -25,7 +25,7 @@ Paper manage app built with Electron.
     - [ ] Link to remark file
 - [x] **Operation** on paper
   - [x] Add
-  - [ ] Add2: Drag and Drop Files
+  - [x] Add2: Drag and Drop Files
   - [x] Select and delete
   - [ ] Select multiple and delete
   - [x] Right menu

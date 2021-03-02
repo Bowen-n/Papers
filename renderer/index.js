@@ -107,6 +107,8 @@ function updateOverview(paper_id) {
                 var abstract = extractAbstract(data.text)
                 document.querySelector('#abstract').innerHTML = abstract
                 paperdb.update({_id: paper_id}, {$set: {abstract: abstract}}, {})
+            }).catch((e)=>{
+                showWarning(e.message)
             })
         }
 
@@ -119,7 +121,7 @@ function updateOverview(paper_id) {
 }
 
 function clearPaperList() {
-    var paperlist = document.querySelector('.paperlist')
+    var paperlist = document.querySelector('.paperlist-paper')
     var paperlist_button = ['.paperlist-button', '.paperlist-button-selected']
     for(var i=0; i<paperlist_button.length; i++){
         var paper_btn_list = document.querySelectorAll(paperlist_button[i])
@@ -186,7 +188,7 @@ function displayPaperlist() {
         for(var i=0; i<docs.length; i++){
             paper_btn = createPaperButton(docs[i])
             bindPaperButton(paper_btn)
-            document.querySelector('.paperlist').appendChild(paper_btn)
+            document.querySelector('.paperlist-paper').appendChild(paper_btn)
         }
     })
     // tags_filter

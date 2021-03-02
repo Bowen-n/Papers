@@ -1,8 +1,23 @@
 
 function bindPaperlistFunc() {
     bindAddPapers()
+    bindDragDropPapers()
     bindDeletePaper()
     bindSearchPaper()
+}
+
+function _addPaperToDatabase(title, path) {
+    var new_doc = {
+        title: title,
+        author: null,
+        abstract: null,
+        publisher: null,
+        url: null,
+        path: path,
+        tags: [],
+        remark: null
+    }
+    paperdb.insert(new_doc)
 }
 
 function addPapers() {
@@ -16,26 +31,11 @@ function addPapers() {
         filepath_list = result.filePaths
         for(var i=0; i<filepath_list.length; i++){
             var splitted = filepath_list[i].split('/')
-            var title_path = splitted[splitted.length-1]
-                
-            var new_doc = {
-                title: title_path,
-                author: null,
-                abstract: null,
-                publisher: null,
-                url: null,
-                path: filepath_list[i],
-                tags: [],
-                remark: null
-            }
-
-            paperdb.insert(new_doc)
-
+            var title_path = splitted[splitted.length-1]   
+            _addPaperToDatabase(title_path, filepath_list[i])
         }
-
         // refresh paperlist
         displayPaperlist()
-
     }).catch(err=>{
         console.log(err)
     })
@@ -45,6 +45,29 @@ function bindAddPapers() {
     document.querySelector('#add-paper').onclick = ()=>{
         addPapers()
     }
+}
+
+function bindDragDropPapers() {
+    var paperlist = document.querySelector('.paperlist-paper')
+
+    paperlist.addEventListener('dragover', function(e){
+        e.preventDefault()
+        e.dataTransfer.dropEffect = 'copy'
+        this.setAttribute('id', 'paper-drag')
+    })
+
+    paperlist.addEventListener('dragleave', function(e){
+        this.setAttribute('id', 'paper-no-drag')
+    })
+
+    paperlist.addEventListener('drop', function(e){
+        this.setAttribute('id', 'paper-no-drag')
+        var files = e.dataTransfer.files
+        for(var i=0; i<files.length; i++){
+            _addPaperToDatabase(files[i].name, files[i].path)
+        }
+        displayPaperlist()
+    })
 }
 
 function _deletePaper(paper_btn){
@@ -64,11 +87,7 @@ function deletePaper() {
     // used by delete button, a paper must be selected
     // selected paper must be current_paper[0]
     if(current_paper.length == 0){
-        dialog.showMessageBox({
-            type: 'warning',
-            message: 'A paper must be selected.',
-            buttons: ['OK']
-        })
+        showWarning('A paper must be selected.')
     }
     paperdb.remove({_id: current_paper[0]})
     current_paper = []
@@ -94,11 +113,7 @@ function _searchPaper(paper_btn) {
 
 function searchPaper() {
     if(current_paper.length == 0){
-        dialog.showMessageBox({
-            type: 'warning',
-            message: 'A paper must be selected.',
-            buttons: ['OK']
-        })
+        showWarning('A paper must be selected.')
     }
     paperdb.findOne({_id: current_paper[0]}, (err, doc)=>{
         shell.openExternal(searchGoogleScholarUrl(doc.title))
