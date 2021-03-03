@@ -166,6 +166,9 @@ function displayLibrary() {
     var library_research = document.querySelector('.library-research')
 
     catedb.findOne({class: 'topic'}, (err, doc)=>{
+        if(doc == null){
+            return
+        }
         var topic_tags = doc.tags
         for(var i=0; i<topic_tags.length; i++){
             var library_btn = createLibraryButton(topic_tags[i], 'topic')
@@ -175,6 +178,9 @@ function displayLibrary() {
     })
 
     catedb.findOne({class: 'research'}, (err, doc)=>{
+        if(doc == null){
+            return
+        }
         var research_tags = doc.tags
         for(var i=0; i<research_tags.length; i++){
             var research_btn = createLibraryButton(research_tags[i], 'research')

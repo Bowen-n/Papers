@@ -1,17 +1,26 @@
 {
-  "name": "panager",
+  "name": "papers",
   "version": "1.0.0",
-  "description": "",
+  "description": "paper management app",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-packager . --icon=resources/icon.icns",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "keywords": [],
-  "author": "",
+  "author": "Bolun Wu",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^11.2.3",
+    "electron": "^11.3.0",
+    "electron-packager": "^15.2.0",
+    "nedb": "^1.8.0",
+    "pdf-parse": "^1.1.1"
+  },
+  "dependencies": {
+    "electron-packager": "^15.2.0",
     "nedb": "^1.8.0",
     "pdf-parse": "^1.1.1"
   }

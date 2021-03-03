@@ -4,6 +4,7 @@ const {Menu, dialog} = require('electron').remote
 const Datastore = require('nedb')
 const pdf = remote.require('pdf-parse')
 const fs = require('fs')
+var path = require('path')
 
 // vars
 var tags_filter = []
@@ -11,10 +12,8 @@ var current_paper = []
 var clickFlag = null
 
 // databases
-var paperdb = new Datastore({ filename: 'database/database.bd', autoload: true })
-var catedb = new Datastore({ filename: 'database/category.bd', autoload: true})
-// paperdb.persistence.setAutocompactionInterval(1000)
-// catedb.persistence.setAutocompactionInterval(1000)
+var paperdb = new Datastore({ filename: path.resolve(__dirname, '../database/database.bd'), autoload: true })
+var catedb = new Datastore({ filename: path.resolve(__dirname, '../database/category.bd'), autoload: true})
 
 // utils
 function spaceToBar(text) {
