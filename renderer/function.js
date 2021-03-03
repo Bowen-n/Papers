@@ -206,6 +206,24 @@ function bindEditTags() {
 }
 
 function addGlobalTag(type) {
+    catedb.find({}, (err, doc)=>{
+        if(doc.length == 0){
+            catedb.insert([{
+                class: 'topic',
+                tags: []
+            }, {
+                class: 'research',
+                tags: []
+            }], ()=>{
+                
+            })
+        }
+    })
+
+    function _add_global_tag()
+    // TODO
+
+    
     var sub_win = new remote.BrowserWindow({
         width: 400, minWidth: 400,
         height: 200, minHeight: 200,
