@@ -203,18 +203,12 @@ function bindEditTags() {
             sub_win.webContents.send('msg', message)
         })
     })
-
-    ipcRenderer.on('utags', (event, new_tags)=>{
-        paperdb.update({_id: current_paper[0]}, {$set: {tags: new_tags}}, {}, ()=>{
-            updateOverview(current_paper[0])
-        })
-    })
 }
 
 function addGlobalTag(type) {
     var sub_win = new remote.BrowserWindow({
-        width: 500, minWidth: 500,
-        height: 300, minHeight: 300,
+        width: 400, minWidth: 400,
+        height: 200, minHeight: 200,
         webPreferences: {
             nodeIntegration: true,
             enableRemoteModule: true
@@ -231,15 +225,36 @@ function addGlobalTag(type) {
             sub_win = null
         })
     })
+}
+
+function bindIpcRenderer() {
+
+    ipcRenderer.on('utags', (event, new_tags)=>{
+        paperdb.update({_id: current_paper[0]}, {$set: {tags: new_tags}}, {}, ()=>{
+            updateOverview(current_paper[0])
+        })
+    })
 
     ipcRenderer.on('global_tags', (event, msg)=>{
-        var tag_type = msg.type
-        var new_tag = msg.new_tag
-        var sub_win_id = msg.win_id
-        console.log(tag_type)
-        catedb.update({class: tag_type}, {$push: {tags: new_tag}}, {}, (err)=>{
-            ipcRenderer.sendTo(sub_win_id, 'status', new_tag)
+        catedb.update({class: msg.type}, {$push: {tags: msg.new_tag}}, {}, ()=>{
+            ipcRenderer.sendTo(msg.win_id, 'status', msg.new_tag)
             displayLibrary()
         })
+    })
+
+}
+
+function removeGlobalTag(library_btn){
+    var type = null
+    var rem_tag = library_btn.innerHTML
+    if(library_btn.getAttribute('class') == 'library-topic-button'){
+        type = 'topic'
+    } else {
+        type = 'research'
+    }
+
+    catedb.update({class: type}, {$pull: {tags: rem_tag}}, {}, ()=>{
+        displayLibrary()
+        paperdb.update({}, {$pull: {tags: rem_tag}}, {multi: true})
     })
 }

@@ -59,3 +59,13 @@ function libraryMenuTemplate(){
     ]
     return template
 }
+
+function libraryBtnMenuTemplate(library_btn){
+    var template = [
+        {
+            label: 'Remove Tag',
+            click: ()=>{ removeGlobalTag(library_btn) }
+        }
+    ]
+    return template
+}

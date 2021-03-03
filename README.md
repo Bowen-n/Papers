@@ -10,8 +10,8 @@ Paper manage app built with Electron.
 # Overview
 - [x] UI
   - [x] Library
-    - [ ] Add tags
-    - [ ] Remove tags
+    - [x] Add tags
+    - [x] Remove tags
   - [x] Paper list
   - [x] Overview
 - [ ] **Overview** for paper
@@ -43,4 +43,4 @@ Paper manage app built with Electron.
 ![demo](demo/demo.png)
 
 # TODO
-- [ ] Add global tags bug!!!
+- [x] Add global tags bug: `ipcRenderer.on` should be outside of `click` event.

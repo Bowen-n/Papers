@@ -39,6 +39,13 @@ function bindLibraryButton(library_btn) {
         clearOverview()
         
     }
+
+    library_btn.addEventListener('contextmenu', (e)=>{
+        e.preventDefault()
+        var libraryBtnMenu = Menu.buildFromTemplate(
+            libraryBtnMenuTemplate(library_btn))
+        libraryBtnMenu.popup({window: remote.getCurrentWindow()})
+    })
 }
 
 function createPaperButton(doc) {
@@ -159,7 +166,6 @@ function displayLibrary() {
     var library_research = document.querySelector('.library-research')
 
     catedb.findOne({class: 'topic'}, (err, doc)=>{
-        console.log(doc.tags)
         var topic_tags = doc.tags
         for(var i=0; i<topic_tags.length; i++){
             var library_btn = createLibraryButton(topic_tags[i], 'topic')
@@ -169,7 +175,6 @@ function displayLibrary() {
     })
 
     catedb.findOne({class: 'research'}, (err, doc)=>{
-        console.log(doc.tags)
         var research_tags = doc.tags
         for(var i=0; i<research_tags.length; i++){
             var research_btn = createLibraryButton(research_tags[i], 'research')
@@ -218,5 +223,7 @@ window.onload = function() {
 
     // overview func
     bindOverviewEditor()
+
+    bindIpcRenderer()
 
 }
