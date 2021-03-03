@@ -34,7 +34,8 @@
             document.title = `Edit ${tag_type} tags`           
             catedb.findOne({class: tag_type}, (err, doc)=>{
                 exist_tags = doc.tags
-                bindConfirm()   
+                bindConfirm()
+                bindCancel() 
             })
         })
 
@@ -43,8 +44,8 @@
         })
 
         function bindCancel(){
-            document.querySelectorAll('#cancel').onclick = ()=>{
-                window.close()
+            document.querySelector('#cancel').onclick = ()=>{
+                remote.getCurrentWindow().close()
             }
         }
 

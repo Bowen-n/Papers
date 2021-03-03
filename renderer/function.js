@@ -208,41 +208,36 @@ function bindEditTags() {
 function addGlobalTag(type) {
     catedb.find({}, (err, doc)=>{
         if(doc.length == 0){
-            catedb.insert([{
-                class: 'topic',
-                tags: []
-            }, {
-                class: 'research',
-                tags: []
-            }], ()=>{
-                
+            catedb.insert([{class: 'topic', tags: []}, {class: 'research', tags: []}], ()=>{
+                _add_global_tag(type)
             })
+        } else {
+            _add_global_tag(type)
         }
     })
 
-    function _add_global_tag()
-    // TODO
-
-    
-    var sub_win = new remote.BrowserWindow({
-        width: 400, minWidth: 400,
-        height: 200, minHeight: 200,
-        webPreferences: {
-            nodeIntegration: true,
-            enableRemoteModule: true
-        }
-    })
-    sub_win.loadFile('./html/add_tag.html')
-    sub_win.webContents.on('did-finish-load', ()=>{
-        var message = {
-            type: type,
-            win_id: remote.getCurrentWindow().webContents.id
-        }
-        sub_win.webContents.send('msg', message)
-        sub_win.on('close', ()=>{
-            sub_win = null
+    function _add_global_tag(type){
+        var sub_win = new remote.BrowserWindow({
+            width: 400, minWidth: 400,
+            height: 200, minHeight: 200,
+            webPreferences: {
+                nodeIntegration: true,
+                enableRemoteModule: true
+            }
         })
-    })
+        sub_win.loadFile('./html/add_tag.html')
+        sub_win.webContents.on('did-finish-load', ()=>{
+            var message = {
+                type: type,
+                win_id: remote.getCurrentWindow().webContents.id
+            }
+            sub_win.webContents.send('msg', message)
+            sub_win.on('close', ()=>{
+                sub_win = null
+            })
+        })
+    }
+
 }
 
 function bindIpcRenderer() {
