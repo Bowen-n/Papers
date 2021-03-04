@@ -44,4 +44,5 @@ Paper manage app built with Electron.
 
 # TODO
 - [x] Add global tags bug: `ipcRenderer.on` should be outside of `click` event.
-- [ ] Package.
+- [x] Package
+  - [electron-packager](https://github.com/electron/electron-packager/issues) & [create-dmg](https://github.com/create-dmg/create-dmg)
