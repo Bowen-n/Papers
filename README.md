@@ -26,8 +26,7 @@ Paper manage app built with Electron.
     - [x] Edit remark
     - [ ] Link to remark file
 - [x] **Operation** on paper
-  - [x] Add
-  - [x] Add2: Drag and Drop Files
+  - [x] Add: Support Drag and Drop Files
   - [x] Select and delete
   - [ ] Select multiple and delete
   - [x] Right menu
@@ -42,7 +41,11 @@ Paper manage app built with Electron.
 # Screenshot
 ![demo](demo/demo.png)
 
-# TODO
+# Notes
 - [x] Add global tags bug: `ipcRenderer.on` should be outside of `click` event.
 - [x] Package
   - [electron-packager](https://github.com/electron/electron-packager/issues) & [create-dmg](https://github.com/create-dmg/create-dmg)
+
+# TODO
+- [ ] Global Menu
+- [ ] Adjust global `current_paper` value.
