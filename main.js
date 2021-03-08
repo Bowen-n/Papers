@@ -4,7 +4,12 @@ var globalMenuTemplate = [
     {
         label: app.getName(),
         submenu: [
-            {label: 'about'}
+            {label: 'About Papers'},
+            {
+                label: 'Quit Papers',
+                accelerator: 'Command+Q',
+                click: ()=>{app.quit()}
+            }
         ]
     }
 ]
