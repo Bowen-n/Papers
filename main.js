@@ -1,5 +1,14 @@
 const {app, BrowserWindow, globalShortcut, Menu, dialog} = require('electron')
 
+var globalMenuTemplate = [
+    {
+        label: app.getName(),
+        submenu: [
+            {label: 'about'}
+        ]
+    }
+]
+
 function createWindow () {
 
     var pWindow = new BrowserWindow({
@@ -16,10 +25,13 @@ function createWindow () {
         pWindow = null
     })
     
+    // Global Menu
+    Menu.setApplicationMenu(Menu.buildFromTemplate(globalMenuTemplate))
+
     // shortcuts
-    globalShortcut.register('F12', ()=>{
-        pWindow.webContents.openDevTools()
-    })
+    // globalShortcut.register('F12', ()=>{
+    //     pWindow.webContents.openDevTools()
+    // })
 
 }
 
