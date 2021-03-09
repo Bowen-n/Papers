@@ -255,6 +255,14 @@ function bindIpcRenderer() {
         })
     })
 
+    ipcRenderer.on('gm_add_tag', (event, msg)=>{
+        if(msg == 'topic'){
+            addGlobalTag('topic')
+        } else {
+            addGlobalTag('research')
+        }
+    })
+
 }
 
 function removeGlobalTag(library_btn){

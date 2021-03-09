@@ -10,31 +10,21 @@ Paper manage app built with Electron.
 # Overview
 - [x] UI
   - [x] Library
-    - [x] Add tags
-    - [x] Remove tags
   - [x] Paper list
   - [x] Overview
 - [ ] **Overview** for paper
   - [x] Title
   - [x] Abstract
-    - [x] Extract abstract automatically
   - [x] Publisher
   - [x] Url
   - [x] Tags
-    - [x] Add/Remove tags
   - [ ] Remark
-    - [x] Edit remark
     - [ ] Link to remark file
-- [x] **Operation** on paper
+- [ ] **Operation** on paper
   - [x] Add: Support Drag and Drop Files
   - [x] Select and delete
   - [ ] Select multiple and delete
   - [x] Right menu
-    - [x] Copy title
-    - [x] Delete
-    - [x] Open
-    - [x] Search with Google Scholar
-    - [x] Open Url
   - [x] Search with Google Scholar
   - [x] Delete
 
@@ -46,6 +36,11 @@ Paper manage app built with Electron.
 - [x] Package
   - [electron-packager](https://github.com/electron/electron-packager/issues) & [create-dmg](https://github.com/create-dmg/create-dmg)
 
-# TODO
+# Progress
 - [ ] Global Menu
+  - [x] About
+  - [x] Emoji
+  - [x] Add global tag
+  - [x] Exit
+  - [ ] ...
 - [ ] Adjust global `current_paper` value.
