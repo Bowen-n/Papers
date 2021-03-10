@@ -34,7 +34,7 @@ function bindLibraryButton(library_btn) {
             default: break
         }
 
-        current_paper = []
+        current_paper = Object()
         displayPaperlist()
         clearOverview()
         
@@ -64,18 +64,18 @@ function bindPaperButton(paper_btn) {
         }
         clickFlag = setTimeout(()=>{
             if(paper_btn.getAttribute('class') == 'paperlist-button'){
-                if(current_paper.length == 1){
-                    document.getElementById(current_paper[0]).setAttribute('class', 'paperlist-button')
-                    current_paper = []
+                if(!isObjEmpty(current_paper)){
+                    document.getElementById(current_paper.id).setAttribute('class', 'paperlist-button')
+                    current_paper = Object()
                 }
                 paper_btn.setAttribute('class', 'paperlist-button-selected')
-                current_paper.push(paper_btn.getAttribute('id'))
-
+                current_paper.id = paper_btn.getAttribute('id')
+                current_paper.title = paper_btn.innerHTML
             } else {
                 paper_btn.setAttribute('class', 'paperlist-button')
             }
 
-            updateOverview(this.getAttribute('id'))
+            updateOverview(paper_btn.getAttribute('id'))
 
         }, 120)
     }
@@ -84,7 +84,7 @@ function bindPaperButton(paper_btn) {
         if(clickFlag){
             clickFlag = clearTimeout(clickFlag)
         }
-        paperdb.findOne({_id: current_paper[0]}, (err, doc)=>{
+        paperdb.findOne({_id: paper_btn.getAttribute('id')}, (err, doc)=>{
             shell.openPath(doc.path)
         })
     }
@@ -99,7 +99,7 @@ function bindPaperButton(paper_btn) {
 }
 
 function updateOverview(paper_id) {
-    if(current_paper.length == 0){
+    if(isObjEmpty(current_paper)){
         return
     }
     paperdb.findOne({_id: paper_id}, (err, doc)=>{

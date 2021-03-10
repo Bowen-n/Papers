@@ -1,39 +1,79 @@
-const {app, BrowserWindow, globalShortcut, Menu, dialog} = require('electron')
+const {app, BrowserWindow, globalShortcut, Menu, dialog, shell} = require('electron')
 const path = require('path')
 
 function globalMenuTemplate(pWindow) {
     var globalMenuTemplate = [
         {
-            label: app.getName(),
-            submenu: [
-                {
-                    label: 'About Papers',
-                    click: ()=>{app.showAboutPanel()}
-                }, {
-                    label: 'Quit Papers',
-                    accelerator: 'Command+Q',
-                    click: ()=>{app.quit()}
-                }
-            ]
+            role: 'appMenu'
         }, {
             label: 'Edit',
             submenu: [
                 {
+                    role: 'cut'
+                }, {
+                    role: 'copy'
+                }, {
+                    role: 'paste'
+                }, {
+                    role: 'pasteandmatchstyle'
+                }, {
+                    role: 'delete'
+                }, {
+                    role: 'selectall'
+                }, {
+                    type: 'separator'
+                }, {
                     label: 'Add Topic Tag',
-                    click: ()=>{
+                    click() {
                         // global menu add tag
                         pWindow.webContents.send('gm_add_tag', 'topic')
                     }
                 }, {
                     label: 'Add Research Tag',
-                    click: ()=>{
+                    click() {
                         pWindow.webContents.send('gm_add_tag', 'research')
                     }
                 }, {
-                    label: '表情与符号',
-                    accelerator: 'Option',
-                    click: ()=>{
-                        app.showEmojiPanel()
+                    type: 'separator'
+                }, {
+                    label: 'Speech',
+                    submenu: [
+                        {
+                            role: 'startspeaking'
+                        }, {
+                            role: 'stopspeaking'
+                        }
+                    ]
+                }
+            ]
+        }, {
+            label: 'View',
+            submenu: [
+                {
+                    role: 'reload'
+                }, {
+                    type: 'separator'
+                }, {
+                    role: 'resetzoom'
+                }, {
+                    role: 'zoomin'
+                }, {
+                    role: 'zoomout'
+                }, {
+                    type: 'separator'
+                }, {
+                    role: 'togglefullscreen'
+                }
+            ]
+        }, {
+            role: 'windowMenu'
+        }, {
+            role: 'help',
+            submenu: [
+                {
+                    label: 'Learn More',
+                    click () {
+                        shell.openExternal('https://github.com/Bowenduan/Papers')
                     }
                 }
             ]

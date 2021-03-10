@@ -75,22 +75,21 @@ function _deletePaper(paper_btn){
     // selected paper may not be current_paper[0]
     paper_btn_id = paper_btn.getAttribute('id')
     paperdb.remove({_id: paper_btn_id})
-    if(paper_btn_id == current_paper[0]){
-        current_paper = []
+    if(paper_btn_id == current_paper.id){
+        current_paper = Object()
         clearOverview()
     }
-    
     displayPaperlist()
 }
 
 function deletePaper() {
     // used by delete button, a paper must be selected
     // selected paper must be current_paper[0]
-    if(current_paper.length == 0){
+    if(isObjEmpty(current_paper)){
         showWarning('A paper must be selected.')
     }
-    paperdb.remove({_id: current_paper[0]})
-    current_paper = []
+    paperdb.remove({_id: current_paper.id})
+    current_paper = Object()
     displayPaperlist()
     clearOverview()
 }
@@ -112,10 +111,10 @@ function _searchPaper(paper_btn) {
 }
 
 function searchPaper() {
-    if(current_paper.length == 0){
+    if(isObjEmpty(current_paper)){
         showWarning('A paper must be selected.')
     }
-    paperdb.findOne({_id: current_paper[0]}, (err, doc)=>{
+    paperdb.findOne({_id: current_paper.id}, (err, doc)=>{
         shell.openExternal(searchGoogleScholarUrl(doc.title))
     })
 }
@@ -146,7 +145,7 @@ function disableStylePaste(dom) {
 function bindEditTitle() {
     edit_title = document.querySelector('#title')
     edit_title.addEventListener('blur', function(){    
-        paperdb.update({_id: current_paper[0]}, {$set: {title: this.innerHTML}}, {})
+        paperdb.update({_id: current_paper.id}, {$set: {title: this.innerHTML}}, {})
         displayPaperlist()
     })
 
@@ -157,7 +156,7 @@ function bindEditTitle() {
 function bindEditAbstract() {
     edit_abstract = document.querySelector('#abstract')
     edit_abstract.addEventListener('blur', function(){
-        paperdb.update({_id: current_paper[0]}, {$set: {abstract: this.innerHTML}}, {})
+        paperdb.update({_id: current_paper.id}, {$set: {abstract: this.innerHTML}}, {})
     })
     disableStylePaste(edit_abstract)
 }
@@ -165,7 +164,7 @@ function bindEditAbstract() {
 function bindEditPublisher() {
     edit_publisher = document.querySelector('#publisher')
     edit_publisher.addEventListener('blur', function(){
-        paperdb.update({_id: current_paper[0]}, {$set: {publisher: this.innerHTML}}, {})
+        paperdb.update({_id: current_paper.id}, {$set: {publisher: this.innerHTML}}, {})
     })
     disableStylePaste(edit_publisher)
 }
@@ -173,7 +172,7 @@ function bindEditPublisher() {
 function bindEditUrl() {
     edit_url = document.querySelector('#url')
     edit_url.addEventListener('blur', function(){
-        paperdb.update({_id: current_paper[0]}, {$set: {url: this.innerHTML}}, {})
+        paperdb.update({_id: current_paper.id}, {$set: {url: this.innerHTML}}, {})
     })
     disableStylePaste(edit_url)
 }
@@ -181,7 +180,7 @@ function bindEditUrl() {
 function bindEditRemark() {
     edit_remark = document.querySelector('#remark')
     edit_remark.addEventListener('blur', function(){
-        paperdb.update({_id: current_paper[0]}, {$set: {remark: this.innerHTML}}, {})
+        paperdb.update({_id: current_paper.id}, {$set: {remark: this.innerHTML}}, {})
     })
     disableStylePaste(edit_remark)
 }
@@ -243,8 +242,8 @@ function addGlobalTag(type) {
 function bindIpcRenderer() {
 
     ipcRenderer.on('utags', (event, new_tags)=>{
-        paperdb.update({_id: current_paper[0]}, {$set: {tags: new_tags}}, {}, ()=>{
-            updateOverview(current_paper[0])
+        paperdb.update({_id: current_paper.id}, {$set: {tags: new_tags}}, {}, ()=>{
+            updateOverview(current_paper.id)
         })
     })
 

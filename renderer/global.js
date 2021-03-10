@@ -8,7 +8,7 @@ var path = require('path')
 
 // vars
 var tags_filter = []
-var current_paper = []
+var current_paper = Object()
 var clickFlag = null
 
 // databases
@@ -37,6 +37,14 @@ function showWarning(message) {
 		message: message,
 		buttons: ['OK']
 	})
+}
+
+function isObjEmpty(obj){
+	if(Object.keys(obj).length === 0){
+		return true
+	} else {
+		return false
+	}
 }
 
 Array.prototype.indexOf = function(val) {

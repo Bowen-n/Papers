@@ -37,10 +37,5 @@ Paper manage app built with Electron.
   - [electron-packager](https://github.com/electron/electron-packager/issues) & [create-dmg](https://github.com/create-dmg/create-dmg)
 
 # Progress
-- [ ] Global Menu
-  - [x] About
-  - [x] Emoji
-  - [x] Add global tag
-  - [x] Exit
-  - [ ] ...
-- [ ] Adjust global `current_paper` value.
+- [x] Global Menu
+- [x] Adjust global `current_paper` value.
